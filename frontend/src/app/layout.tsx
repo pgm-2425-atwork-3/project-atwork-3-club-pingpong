@@ -4,36 +4,29 @@ import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { Toaster } from "react-hot-toast";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const Roboto = localFont({
+    src: "./fonts/Roboto.ttf",
+    variable: "--font-geist-sans",
+    weight: "100 900",
 });
 
 export const metadata = {
-  title: "Ecommerce App",
-  description: "A simple ecommerce application",
+    title: "Ecommerce App",
+    description: "A simple ecommerce application",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Toaster position="top-center" reverseOrder={false} />
-        <SiteHeader />
-        {children}
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body className={`${Roboto.variable} `}>
+                <Toaster position="top-center" reverseOrder={false} />
+                <SiteHeader />
+                {children}
+            </body>
+        </html>
+    );
 }
