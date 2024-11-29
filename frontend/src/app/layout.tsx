@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { Toaster } from "react-hot-toast";
+import Navigation from "@/components/Navigation";
+import "@/css/main.css";
 
 const Roboto = localFont({
     src: "./fonts/Roboto.ttf",
@@ -11,8 +13,8 @@ const Roboto = localFont({
 });
 
 export const metadata = {
-    title: "Ecommerce App",
-    description: "A simple ecommerce application",
+    title: "Club Pinppong",
+    description: "Club Ping Pong",
 };
 
 export default function RootLayout({
@@ -22,10 +24,13 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${Roboto.variable} `}>
+            <body
+                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
                 <Toaster position="top-center" reverseOrder={false} />
                 <SiteHeader />
                 {children}
+                <Navigation />
             </body>
         </html>
     );
