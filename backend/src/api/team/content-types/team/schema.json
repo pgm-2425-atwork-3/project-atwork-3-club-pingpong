@@ -19,6 +19,12 @@
       "relation": "manyToMany",
       "target": "api::game.game",
       "mappedBy": "opponentTeam"
+    },
+    "users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "teamId"
     }
   }
 }

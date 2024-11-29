@@ -9,7 +9,7 @@
     "displayName": "User"
   },
   "options": {
-    "timestamps": true
+    "draftAndPublish": false
   },
   "attributes": {
     "username": {
@@ -82,6 +82,12 @@
       "relation": "manyToMany",
       "target": "api::game.game",
       "mappedBy": "playerTwoId"
+    },
+    "teamId": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::team.team",
+      "inversedBy": "users"
     }
   }
 }

@@ -1,11 +1,6 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-import { useState, FormEvent } from "react";
-import { useRouter } from "next/navigation";
 import LoginForm from "./components/LoginForm";
-import { authenticate, authenticateThirdParty } from "@/lib/loginActions";
-import Image from "next/image";
 
 export default function Login() {
     return (
