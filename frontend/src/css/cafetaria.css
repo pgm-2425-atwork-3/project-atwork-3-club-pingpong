@@ -1,25 +1,25 @@
 .cafetaria {
-  .cafetaria__products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
-    gap: 0.5rem;
-    padding: 1rem;
-    padding-bottom: 10rem;
-  }
-
-  .product-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    color: #f94d1d;
-    font-weight: bold;
-    font-size: 12px;
-
-    .product-card__image {
-      border-radius: 1rem;
+    .cafetaria__products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+        gap: 0.5rem;
+        padding: 1rem;
+        padding-bottom: 10rem;
     }
-    .product-card__price {
-      color: #882a0f;
+
+    .product-card {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        color: #f94d1d;
+        font-weight: bold;
+        font-size: 12px;
+
+        .product-card__image {
+            border-radius: 1rem;
+        }
+        .product-card__price {
+            color: #882a0f;
+        }
     }
-  }
 }
