@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "drinks",
+  "info": {
+    "singularName": "drink",
+    "pluralName": "drinks",
+    "displayName": "Drink"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "unit_price": {
+      "type": "decimal"
+    },
+    "order_items": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::order-item.order-item",
+      "mappedBy": "drinks"
+    }
+  }
+}

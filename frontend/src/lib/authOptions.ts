@@ -1,149 +1,116 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GitHubProvider from "next-auth/providers/github";
-// import GoogleProvider from "next-auth/providers/google";
-import bcrypt from "bcryptjs";
-import { cookies } from "next/headers";
 
-type StrapiErrorT = {
-  error: {
-    message: string;
-  };
-};
-
-type StrapiLoginResponseT = {
-  jwt: string;
-  user: {
-    id: number;
-    username: string;
-    email: string;
-    blocked: boolean;
-    role: string;
-  };
-};
+const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
 export const authOptions: NextAuthOptions = {
-  // added
-  //  database: process.env.NEXT_PUBLIC_DATABASE_URL,
-  providers: [
-    // Credentials Provider for Email and Password Login
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        identifier: {
-          label: "Email",
-          type: "email",
-          placeholder: "user@example.com",
-        },
-        password: { label: "Password", type: "password" },
-        role: { label: "Role", type: "role" },
-      },
-      async authorize(credentials) {
-        const strapiResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/local`,
-          {
-            method: "POST",
-            headers: {
-              "Content-type": "application/json",
+    providers: [
+        CredentialsProvider({
+            name: "Credentials",
+            credentials: {
+                email: {
+                    label: "Email",
+                    type: "email",
+                    placeholder: "user@example.com",
+                },
+                password: { label: "Password", type: "password" },
             },
-            body: JSON.stringify({
-              identifier: credentials!.email,
-              password: credentials!.password,
-            }),
-          }
-        );
-        const data = await strapiResponse.json();
-        if (strapiResponse.ok) {
-          return {
-            name: data.user.username,
-            email: data.user.email,
-            id: data.user.id.toString(),
-            // strapiUserId: data.user.id,
-            blocked: data.user.blocked,
-            strapiToken: data.jwt,
-            role: data.user.role, // Ensure role is included
-          };
-        }
-        return null;
-      },
-    }),
-    // GitHub Provider for OAuth
-    GitHubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID || "",
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
-    }),
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID || "",
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-    // }),
-  ],
-  session: {
-    strategy: "jwt",
-  },
-  secret: process.env.NEXTAUTH_SECRET,
-  pages: {
-    signIn: "/login",
-  },
-  callbacks: {
-    async jwt({ token, user, account }) {
-      console.log("jwt callback");
-      console.log("token", token);
-      // Persist the GitHub ID to the token right after sign in
-      if (user) {
-        token.id = user.id;
-        token.role = user.role;
-        // to copy the whole user object to the token
-        // token = { ...token, ...user }
-      }
-      if (account) {
-        if (account.provider === "google" || account.provider === "github") {
-          try {
-            const strapiResponse = await fetch(
-              `${process.env.NEXT_PUBLIC_API_URL}/api/auth/${account.provider}/callback?access_token=${account.access_token}`,
-              { cache: "no-cache" }
-            );
-            if (!strapiResponse.ok) {
-              const strapiError: StrapiErrorT = await strapiResponse.json();
-              throw new Error(strapiError.error.message);
+            async authorize(credentials) {
+                console.log("Credentials received in authorize:", credentials); // Log credentials
+
+                if (!credentials) return null;
+
+                const { email, password } = credentials;
+                try {
+                    const payload = {
+                        identifier: email,
+                        password,
+                    };
+                    console.log("Request Payload:", payload);
+
+                    const response = await fetch(
+                        `${strapiUrl}/api/auth/local`,
+                        {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                identifier: email,
+                                password,
+                            }),
+                        }
+                    );
+
+                    const data = await response.json();
+                    console.log("Response Data:", data); // Log the full response
+
+                    if (!response.ok) {
+                        console.error(
+                            "Failed to login. Response status:",
+                            response.status
+                        );
+                        console.error(
+                            "Error message from Strapi:",
+                            data.error?.message
+                        );
+                        return null;
+                    }
+
+                    const user = data.user;
+
+                    if (user) {
+                        const roleResponse = await fetch(
+                            `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${user.id}?populate=role`
+                        );
+                        const roleData = await roleResponse.json();
+
+                        console.log("Fetched Role Data:", roleData);
+
+                        const userRole = roleData.role?.type;
+                        console.log("Assigned User Role:", userRole);
+
+                        return {
+                            id: user.id,
+                            name: user.username,
+                            email: user.email,
+                            role: userRole,
+                            accessToken: data.jwt,
+                        };
+                    }
+                } catch (error) {
+                    console.error("Error authenticating with Strapi:", error);
+                    return null;
+                }
+
+                return null;
+            },
+        }),
+    ],
+    session: {
+        strategy: "jwt",
+    },
+    secret: process.env.NEXTAUTH_SECRET,
+    pages: {
+        signIn: "/login",
+    },
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id; // Ensure the role is correctly set
+                token.accessToken = user.accessToken; // Save access token here
             }
-            const strapiLoginResponse: StrapiLoginResponseT =
-              await strapiResponse.json();
-            // customize token
-            // name and email will already be on here
-            token.strapiToken = strapiLoginResponse.jwt;
-            // Set cookie with the JWT token
-            // const cookieOptions = {
-            //   httpOnly: true,
-            //   secure: process.env.NODE_ENV === 'production',
-            //   maxAge: 60 * 60 * 24 * 7, // 1 week
-            //   path: '/',
-            // };
-            console.log("cookieOptions", strapiLoginResponse.jwt);
-            const cookieStore = cookies();
-            cookieStore.set("next-auth.jwt-token", strapiLoginResponse.jwt);
-            // Assuming you have access to the response object
-            // res.setHeader('Set-Cookie', jwtCookie);
-            // console.log("strapiLoginResponse", strapiLoginResponse.jwt);
-          } catch (error) {
-            throw error;
-          }
-        }
-      }
-      console.log("token", token);
-      return token;
+            console.log("JWT Callback - Token Role:", token.role); // Log the token role to ensure it's set properly
+            return token;
+        },
+        async session({ session, token }) {
+            if (token && session.user) {
+                session.user.id = token.id;
+                session.accessToken = token.accessToken;
+                return session;
+            }
+            console.log("Session Callback - Session Role:", session.user.role); // Log session role to verify
+            return session;
+        },
     },
-    async session({ session, token }) {
-      if (token && session.user) {
-        session.user.id = token.id as number;
-        session.user.role = token.role as "admin" | "user";
-        session.user.strapiToken = token.strapiToken;
-      }
-      // to copy the the whole token to the session
-      // session.user = {
-      //   ...session.user,
-      //   ...token
-      // }
-      return session;
-    },
-  },
 };
+
+export default NextAuth(authOptions);
