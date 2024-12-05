@@ -4,7 +4,8 @@
   "info": {
     "singularName": "drink",
     "pluralName": "drinks",
-    "displayName": "Drink"
+    "displayName": "Drink",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -22,6 +23,16 @@
       "relation": "manyToMany",
       "target": "api::order-item.order-item",
       "mappedBy": "drinks"
+    },
+    "drink_image": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

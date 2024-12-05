@@ -1,14 +1,12 @@
 import { Product } from "@/types/types";
 
 export async function getProducts() {
-  try {
-    const res = await fetch(
-      "https://api.escuelajs.co/api/v1/products?offset=0&limit=12"
-    );
-    const products = await res.json();
-    return products as Product[];
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
+    try {
+        const res = await fetch("http://localhost:1337/api/drinks");
+        const products = await res.json();
+        return products.data as Product[];
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
 }

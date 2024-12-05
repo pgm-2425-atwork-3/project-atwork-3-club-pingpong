@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
@@ -13,7 +12,7 @@ const Roboto = localFont({
 });
 
 export const metadata = {
-    title: "Club Pinppong",
+    title: "Club Ping Pong",
     description: "Club Ping Pong",
 };
 
