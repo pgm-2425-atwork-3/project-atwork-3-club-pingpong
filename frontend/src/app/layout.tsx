@@ -13,7 +13,7 @@ const Roboto = localFont({
 });
 
 export const metadata = {
-    title: "Club Pinppong",
+    title: "Club Ping Pong",
     description: "Club Ping Pong",
 };
 
