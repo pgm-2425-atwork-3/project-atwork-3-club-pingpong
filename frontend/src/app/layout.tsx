@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { Toaster } from "react-hot-toast";
 import Navigation from "@/components/Navigation";
 import "@/css/main.css";
+import { getServerSession } from "next-auth";
 
 const Roboto = localFont({
     src: "./fonts/Roboto.ttf",
@@ -17,16 +18,15 @@ export const metadata = {
     description: "Club Ping Pong",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
         <html lang="en">
-            <body className={`${Roboto.variable} antialiased`}>
+            <body>
                 <Toaster position="top-center" reverseOrder={false} />
-                <SiteHeader />
                 {children}
                 <Navigation />
             </body>

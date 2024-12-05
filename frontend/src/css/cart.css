@@ -1,0 +1,110 @@
+.cart {
+  .cart__title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #f94d1d;
+  }
+
+  .cart__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  .cart__items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+  }
+  .cart-item {
+    width: 23rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+  }
+  .cart-item__image {
+    width: 8rem;
+    height: 8em;
+    border-radius: 0.5rem;
+  }
+  .cart-item__details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: .5rem;
+  }
+  .cart-item__title {
+    color: #f94d1d;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  .cart-item__price {
+    color: #882a0f;
+  }
+  .cart-item__button {
+    background-color: #f94d1d;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.25rem .75rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  .cart-item__quantity-value {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 1rem;
+  }
+  .cart-item__remove-button {
+    background-color: #f94d1d;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.3rem .75rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+}
+
+.cart__summary {
+  position: fixed;
+  bottom: 5rem;
+  width: 100%;
+  left: 0;
+  background-color: white;
+  padding: 1rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+.summary__title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f94d1d;
+}
+.summary__item {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+}
+.summary__total {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #f94d1d;
+  display: flex;
+  justify-content: space-between;
+}
+.summary__checkout-button {
+  background-color: #f94d1d;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}

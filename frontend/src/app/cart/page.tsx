@@ -1,7 +1,9 @@
 "use client";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
+
+import { get } from "http";
 import useCartStore from "../../store/CartStore";
+import "@/css/cart.css";
+import Link from "next/link";
 
 interface CartItem {
   id: number;
@@ -21,76 +23,74 @@ export default function Cart() {
   const total = subtotal + tax;
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">
+    <div className="cart">
+      <main className="cart__main">
+        <h1 className="cart__title">
           Your Cart({items.reduce((sum, i) => sum + i.quantity, 0)})
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2">
+        <div className="cart__content">
+          <div className="cart__items">
             {items.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center bg-white p-4 mb-4 rounded-lg shadow"
-              >
+              <div key={item.id} className="cart-item">
                 <img
                   src={item.image}
                   alt={item.title}
                   width={80}
                   height={80}
-                  className="rounded-md mr-4"
+                  className="cart-item__image"
                 />
-                <div className="flex-grow">
-                  <h2 className="text-lg font-semibold text-gray-800">
-                    {item.title}
-                  </h2>
-                  <p className="text-gray-600">${item.price.toFixed(2)}</p>
-                  <div className="flex items-center mt-2">
-                    <Button
+                <div className="cart-item__details">
+                  <h2 className="cart-item__title">{item.title}</h2>
+                  <p className="cart-item__price">${item.price.toFixed(2)}</p>
+                  <div className="cart-item__quantity">
+                    <button
                       onClick={() => updateQty("decrement", item.id)}
-                      variant="outline"
-                      size="sm"
+                      className="cart-item__button"
                     >
                       -
-                    </Button>
-                    <span className="mx-2">{item.quantity}</span>
-                    <Button
+                    </button>
+                    <span className="cart-item__quantity-value">
+                      {item.quantity}
+                    </span>
+                    <button
                       onClick={() => updateQty("increment", item.id)}
-                      variant="outline"
-                      size="sm"
+                      className="cart-item__button"
                     >
                       +
-                    </Button>
+                    </button>
                   </div>
                 </div>
-                <Button
+                <button
                   onClick={() => removeFromCart(item.id)}
-                  variant="destructive"
-                  size="sm"
+                  className="cart-item__remove-button"
                 >
                   Remove
-                </Button>
+                </button>
               </div>
             ))}
           </div>
-          <div className="md:col-span-1">
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                Order Summary
-              </h2>
-              <div className="flex justify-between mb-2">
+          <div className="cart__summary">
+            <div className="summary">
+              <h2 className="summary__title">Order Summary</h2>
+              <div className="summary__item">
                 <span>Subtotal</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between mb-2">
+              <div className="summary__item">
                 <span>Tax</span>
                 <span>${tax.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between font-semibold text-lg mt-4 pt-4 border-t">
+              <div className="summary__total">
                 <span>Total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
-              <Button className="w-full mt-6">Proceed to Checkout</Button>
+              <Link
+                href="cart/checkout"
+                className="summary__checkout-button"
+                onClick={() => console.log(items)}
+              >
+                Proceed to Checkout
+              </Link>
             </div>
           </div>
         </div>

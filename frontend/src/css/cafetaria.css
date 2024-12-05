@@ -21,5 +21,13 @@
     .product-card__price {
       color: #882a0f;
     }
+    .product-card__button {
+      background-color: #f94d1d;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
   }
 }

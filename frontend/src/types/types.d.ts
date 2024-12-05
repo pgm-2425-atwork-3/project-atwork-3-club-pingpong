@@ -20,3 +20,27 @@ export type listItem = {
   label: string;
   link?: string;
 };
+
+export type User = {
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+};
+
+export type Order = {
+  user_id: number;
+  dateCreated: string;
+  paymentMethod: string;
+};
+
+export type OrderItem = {
+  // id: number;
+  order_id: {
+    id: number;
+  };
+  drink_id: {
+    id: number;
+  };
+  quantity: number;
+};
