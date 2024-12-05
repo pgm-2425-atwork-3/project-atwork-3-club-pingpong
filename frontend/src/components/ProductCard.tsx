@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { Product } from "@/types/types";
 import useCartStore from "@/store/CartStore";
 
@@ -26,4 +25,5 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
     </div>
   );
+
 }
