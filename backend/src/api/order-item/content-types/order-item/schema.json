@@ -12,23 +12,13 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "order": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::order.order",
-      "inversedBy": "order_items"
-    },
     "quantity": {
       "type": "integer"
     },
-    "unit_price": {
-      "type": "decimal"
-    },
-    "drinks": {
+    "drink_id": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::drink.drink",
-      "inversedBy": "order_items"
+      "relation": "oneToOne",
+      "target": "api::drink.drink"
     }
   }
 }
