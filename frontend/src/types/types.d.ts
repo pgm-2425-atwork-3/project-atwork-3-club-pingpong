@@ -11,6 +11,7 @@ export type Product = {
     unit_price: string;
     category: Category;
     images: string[];
+    drink_image: string;
 };
 
 export type listItem = {
@@ -29,4 +30,18 @@ export type User = {
     role: string;
     created_at: string;
     updated_at: string;
+};
+
+export type Team = {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+};
+
+export type Group = {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
 };

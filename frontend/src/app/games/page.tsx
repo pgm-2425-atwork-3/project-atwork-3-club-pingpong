@@ -1,47 +1,38 @@
 "use client";
-import ListItem from "@/components/listItem";
-import "@/css/list-item.css"
+import ListItem from "@/components/ListItem";
+import "@/css/list-item.css";
+import { getGroups } from "@/actions/getGroups";
+import { Group } from "@/types/types";
+import { useEffect, useState } from "react";
 
 export default function Games() {
-  const dummyGames = [
-    {
-      id: 1,
-      title: "HSO Assenede vs Dilbeek",
-      location: "HSO Assenede",
-      time: "16:00",
-      label: "Joined",
-      link: "/games/game-1",
-    },
-    {
-      id: 2,
-      title: "HSO Assenede vs Dilbeek",
-      location: "HSO Assenede",
-      time: "16:00",
-      label: "Signup",
-      link: "/games/game-2",
-    },
-    {
-      id: 3,
-      title: "HSO Assenede vs Dilbeek",
-      location: "HSO Assenede",
-      time: "16:00",
-      label: "Signup",
-      link: "/games/game-3",
-    },
-  ];
+    const [groups, setGroups] = useState<Group[]>([]); // Initializing as an empty array
 
-  return (
-    <div className="list">
-      {dummyGames.map((game) => (
-        <ListItem
-          key={game.id}
-          title={game.title}
-          location={game.location}
-          time={game.time}
-          label={game.label}
-          link={game.link}
-        />
-      ))}
-    </div>
-  );
+    useEffect(() => {
+        const fetchGroups = async () => {
+            try {
+                const fetchedGroups = await getGroups(); // Fetching groups
+                setGroups(fetchedGroups); // Set the fetched data directly
+                console.log("Fetched groups:", fetchedGroups);
+            } catch (error) {
+                console.error("Error fetching groups:", error);
+            }
+        };
+        fetchGroups();
+    }, []);
+
+    return (
+        <div className="list">
+            <h1 className="text-xl font-bold text-main">
+                Welke groep wil je bekijken?
+            </h1>
+            {groups.map((group) => (
+                <ListItem
+                    key={group.id}
+                    title={group.name}
+                    link={`/games/${group.id}`}
+                />
+            ))}
+        </div>
+    );
 }

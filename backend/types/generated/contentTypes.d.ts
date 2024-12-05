@@ -598,6 +598,34 @@ export interface ApiTeamTeam extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiUserGroupUserGroup extends Struct.CollectionTypeSchema {
+  collectionName: 'user_groups';
+  info: {
+    displayName: 'UserGroup';
+    pluralName: 'user-groups';
+    singularName: 'user-group';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-group.user-group'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -1120,6 +1148,7 @@ declare module '@strapi/strapi' {
       'api::order-item.order-item': ApiOrderItemOrderItem;
       'api::order.order': ApiOrderOrder;
       'api::team.team': ApiTeamTeam;
+      'api::user-group.user-group': ApiUserGroupUserGroup;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
