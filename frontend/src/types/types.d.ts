@@ -46,3 +46,11 @@ export type Group = {
     description: string;
     image: string;
 };
+
+export type Event = {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    documentId: string;
+};
