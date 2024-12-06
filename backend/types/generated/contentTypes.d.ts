@@ -391,6 +391,10 @@ export interface ApiDrinkDrink extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::drink.drink'> &
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
+    order_items: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::order-item.order-item'
+    >;
     publishedAt: Schema.Attribute.DateTime;
     unit_price: Schema.Attribute.Decimal;
     updatedAt: Schema.Attribute.DateTime;

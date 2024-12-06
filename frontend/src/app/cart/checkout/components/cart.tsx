@@ -4,40 +4,23 @@ import useCartStore from "@/store/CartStore";
 import { useRouter } from "next/router";
 import { Order, OrderItem } from "@/types/types";
 import { gql, request } from "graphql-request";
+import { getOrders, createOrder } from "@/graphql/orders";
+
+// Import the CSS
+import "@/css/checkout.css";
 
 const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
-export default function Cart() {
+export default function Cart({ user: { documentId } }) {
   // const router = useRouter();
 
   async function fetchOrders() {
-    const query = gql`
-      query Orders {
-        orders {
-          documentId
-          paymentMethod
-          user_id {
-            documentId
-            username
-          }
-          order_items {
-            documentId
-            quantity
-            drink_id {
-              name
-              unit_price
-              documentId
-            }
-          }
-        }
-      }
-    `;
     const response: { orders: Order[] } = await request(
-      `http://localhost:1337/graphql`,
-      query
+      `${baseUrl}/graphql`,
+      getOrders
     );
     const orders = response.orders;
-    
+
     return console.log(orders);
   }
   fetchOrders();
@@ -70,10 +53,10 @@ export default function Cart() {
     products.forEach(async (product) => {
       const newOrderItem: OrderItem = {
         order_id: {
-          id: id,
+          documentId: product.documentId,
         },
         drink_id: {
-          id: product.id,
+          documentId: product.documentId,
         },
         quantity: product.quantity,
       };
@@ -92,20 +75,38 @@ export default function Cart() {
   };
 
   return (
-    <div className="checkout__products">
-      <form onSubmit={handleSubmit}>
-        {products.length > 0 ? (
-          products.map((product) => (
-            <div key={product.id} className="checkout__product">
-              <span>{product.title}</span>
-              <span>{product.price}</span>
+    <>
+      <div className="checkout__summary">
+        <h2 className="checkout__summary-title">Bestelling overzicht</h2>
+        <div className="checkout__summary-details">
+          {products.map((product, index) => (
+            <div key={index} className="checkout__summary-item">
+              <span className="checkout__summary-item-name">
+                {product.name}
+              </span>
+              <span className="checkout__summary-item-quantity">
+                x{product.quantity}
+              </span>
+              <span className="checkout__summary-item-price">
+                €{product.unit_price}
+              </span>
             </div>
-          ))
-        ) : (
-          <p>No items in the cart.</p>
-        )}
-        <button type="submit">Submit Order</button>
-      </form>
-    </div>
+          ))}
+        </div>
+        <div className="checkout__summary-total">
+          <span>Total:</span>
+          <span>
+            €
+            {products
+              .reduce(
+                (total, product) =>
+                  total + product.unit_price * product.quantity,
+                0
+              )
+              .toFixed(2)}
+          </span>
+        </div>
+      </div>
+    </>
   );
 }

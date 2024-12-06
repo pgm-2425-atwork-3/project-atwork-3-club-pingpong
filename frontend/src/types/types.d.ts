@@ -4,14 +4,17 @@ type Category = {
     image: string;
 };
 
-export type Product = {
-    id: number;
-    title: string;
+export type Drink = {
+    id?: number;
+    documentId?: string;
+    name: string;
     price: number;
     unit_price: string;
-    category: Category;
-    images: string[];
-    drink_image: string;
+    images: string;
+    drink_image: {
+        url: string;
+        alternativeText: string;
+    };
 };
 
 export type listItem = {
@@ -54,6 +57,7 @@ export type User = {
 };
 
 export type Order = {
+  documentId: string;
   user_id: number;
   dateCreated: string;
   paymentMethod: string;
@@ -62,10 +66,10 @@ export type Order = {
 export type OrderItem = {
   // id: number;
   order_id: {
-    id: number;
+    documentId: string;
   };
   drink_id: {
-    id: number;
+    documentId: string;
   };
   quantity: number;
 };

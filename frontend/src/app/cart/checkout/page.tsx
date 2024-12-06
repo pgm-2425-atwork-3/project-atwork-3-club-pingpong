@@ -5,5 +5,6 @@ import Cart from "./components/cart";
 export default async function Checkout() {
   const session = await getServerSession(authOptions);
   console.log(session);
-  return <Cart username={session} />;
+  return <Cart user={session} />;
 }
+

@@ -15,8 +15,9 @@ interface CartItem {
 
 export default function Cart() {
   const { items, removeFromCart, updateQty } = useCartStore((state) => state);
+  console.log(items)
   const subtotal = items.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => total + item.unit_price * item.quantity,
     0
   );
   const tax = subtotal * 0.1; // Assuming 10% tax
@@ -30,21 +31,21 @@ export default function Cart() {
         </h1>
         <div className="cart__content">
           <div className="cart__items">
-            {items.map((item) => (
-              <div key={item.id} className="cart-item">
-                <img
-                  src={item.image}
-                  alt={item.title}
+            {items.map((item, index) => (
+              <div key={index} className="cart-item">
+                {/* <img
+                  src={item.drink_image.url}
+                  alt={item.name}
                   width={80}
                   height={80}
                   className="cart-item__image"
-                />
+                /> */}
                 <div className="cart-item__details">
-                  <h2 className="cart-item__title">{item.title}</h2>
-                  <p className="cart-item__price">${item.price.toFixed(2)}</p>
+                  <h2 className="cart-item__title">{item.name}</h2>
+                  <p className="cart-item__price">€{item.unit_price}</p>
                   <div className="cart-item__quantity">
                     <button
-                      onClick={() => updateQty("decrement", item.id)}
+                      onClick={() => updateQty("decrement", item.documentId)}
                       className="cart-item__button"
                     >
                       -
@@ -53,7 +54,7 @@ export default function Cart() {
                       {item.quantity}
                     </span>
                     <button
-                      onClick={() => updateQty("increment", item.id)}
+                      onClick={() => updateQty("increment", item.documentId)}
                       className="cart-item__button"
                     >
                       +
@@ -61,7 +62,7 @@ export default function Cart() {
                   </div>
                 </div>
                 <button
-                  onClick={() => removeFromCart(item.id)}
+                  onClick={() => removeFromCart(item.documentId)}
                   className="cart-item__remove-button"
                 >
                   Remove
@@ -78,11 +79,11 @@ export default function Cart() {
               </div>
               <div className="summary__item">
                 <span>Tax</span>
-                <span>${tax.toFixed(2)}</span>
+                <span>€{tax.toFixed(2)}</span>
               </div>
               <div className="summary__total">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>€{total.toFixed(2)}</span>
               </div>
               <Link
                 href="cart/checkout"
