@@ -4,7 +4,8 @@
   "info": {
     "singularName": "event",
     "pluralName": "events",
-    "displayName": "Event"
+    "displayName": "Event",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -28,6 +29,12 @@
       "relation": "manyToMany",
       "target": "api::event-signup.event-signup",
       "mappedBy": "eventId"
+    },
+    "user_group": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::user-group.user-group",
+      "inversedBy": "event"
     }
   }
 }

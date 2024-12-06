@@ -57,7 +57,7 @@ const Navigation = () => {
                     <Link
                         href="/profile"
                         className={
-                            isActive("/profiel")
+                            isActive("/profile")
                                 ? "navigation__link active"
                                 : "navigation__link"
                         }

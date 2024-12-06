@@ -88,6 +88,11 @@
       "relation": "manyToMany",
       "target": "api::team.team",
       "inversedBy": "users"
+    },
+    "user_group": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::user-group.user-group"
     }
   }
 }

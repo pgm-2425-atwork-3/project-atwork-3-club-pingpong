@@ -13,6 +13,12 @@
   "attributes": {
     "name": {
       "type": "string"
+    },
+    "event": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::event.event",
+      "mappedBy": "user_group"
     }
   }
 }

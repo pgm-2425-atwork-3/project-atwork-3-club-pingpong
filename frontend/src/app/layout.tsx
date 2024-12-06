@@ -12,8 +12,8 @@ const Roboto = localFont({
 });
 
 export const metadata = {
-    title: "Club Ping Pong",
-    description: "Club Ping Pong",
+    title: "HNO Assenede",
+    description: "HNO Assenede",
 };
 
 export default function RootLayout({

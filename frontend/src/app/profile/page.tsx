@@ -5,6 +5,7 @@ import { getUserForProfile } from "@/actions/getUserForProfile";
 import { signOut } from "next-auth/react";
 import EditButton from "@/components/buttons/EditButton";
 import "@/css/list-item.css";
+import EditProfile from "@/components/edit/EditProfile";
 
 const ProfilePage = () => {
     const [user, setUser] = useState<{
@@ -20,10 +21,16 @@ const ProfilePage = () => {
         loadUser();
     }, []);
 
+    console.log("User:", user);
+
     if (!user) {
         return (
             <div>
                 <h1>You have no access to this page</h1>
+                <p>
+                    If you are a member please <a href="/login">login</a> to
+                    view this page
+                </p>
             </div>
         );
     }
@@ -32,10 +39,8 @@ const ProfilePage = () => {
         <div className="p-1 flex flex-col items-center w-1/3 m-auto ">
             <p className="text-xl">{user.username}</p>
             <p>{user.email}</p>
-            <EditButton>Edit profile</EditButton>
-            <div>
-                <h1>View order History</h1>
-            </div>
+            <p>{user.user_group.name}</p>
+            <EditProfile />
             <button
                 className="p-2 border-gray border rounded w-fit"
                 onClick={() => signOut()}

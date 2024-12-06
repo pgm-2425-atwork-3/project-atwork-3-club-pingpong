@@ -30,6 +30,7 @@ export type User = {
     role: string;
     created_at: string;
     updated_at: string;
+    user_group: string;
 };
 
 export type Team = {

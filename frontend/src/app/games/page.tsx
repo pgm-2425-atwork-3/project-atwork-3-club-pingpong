@@ -30,7 +30,8 @@ export default function Games() {
                 <ListItem
                     key={group.id}
                     title={group.name}
-                    link={`/games/${group.id}`}
+                    link={`/games/${group.documentId}`}
+                    label=""
                 />
             ))}
         </div>
