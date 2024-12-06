@@ -74,7 +74,6 @@ const EditProfile = () => {
                     body: JSON.stringify({
                         username: formData.name,
                         email: formData.email,
-                        bio: formData.bio || undefined,
                         password: formData.password || undefined,
                     }),
                 }
@@ -106,7 +105,7 @@ const EditProfile = () => {
         <div>
             <button
                 onClick={() => setIsEditModalOpen(true)}
-                className="px-4 py-2 bg-blue-500 text-white rounded"
+                className="px-4 py-2 bg-main text-white rounded"
             >
                 Edit Profile
             </button>
@@ -146,18 +145,6 @@ const EditProfile = () => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="bio" className="block mb-1">
-                                    Bio
-                                </label>
-                                <input
-                                    id="bio"
-                                    name="bio"
-                                    value={formData.bio}
-                                    onChange={handleInputChange}
-                                    className="border p-2 rounded w-full"
-                                />
-                            </div>
-                            <div className="mb-4">
                                 <label
                                     htmlFor="password"
                                     className="block mb-1"
@@ -183,7 +170,7 @@ const EditProfile = () => {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-500 text-white rounded"
+                                    className="px-4 py-2 bg-main text-white rounded"
                                 >
                                     Save
                                 </button>

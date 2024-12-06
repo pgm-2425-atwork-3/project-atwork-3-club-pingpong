@@ -457,10 +457,12 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
       'api::event-signup.event-signup'
     >;
     eventDate: Schema.Attribute.DateTime;
+    home_team: Schema.Attribute.Relation<'oneToOne', 'api::team.team'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::event.event'> &
       Schema.Attribute.Private;
     location: Schema.Attribute.String;
+    opponent_team: Schema.Attribute.Relation<'oneToOne', 'api::team.team'>;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;

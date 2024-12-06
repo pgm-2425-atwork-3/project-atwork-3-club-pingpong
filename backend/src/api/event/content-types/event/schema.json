@@ -35,6 +35,16 @@
       "relation": "oneToOne",
       "target": "api::user-group.user-group",
       "inversedBy": "event"
+    },
+    "home_team": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::team.team"
+    },
+    "opponent_team": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::team.team"
     }
   }
 }
