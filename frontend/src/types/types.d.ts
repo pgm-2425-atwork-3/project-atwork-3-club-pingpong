@@ -35,7 +35,7 @@ export type User = {
 
 export type Team = {
     id: number;
-    name: string;
+    team_name: string;
     description: string;
     image: string;
 };
@@ -53,4 +53,6 @@ export type Event = {
     description: string;
     image: string;
     documentId: string;
+    home_team: Team;
+    opponent_team: Team;
 };
