@@ -12,11 +12,10 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "userId": {
+    "user_id": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "order"
+      "target": "plugin::users-permissions.user"
     },
     "dateCreated": {
       "type": "datetime"

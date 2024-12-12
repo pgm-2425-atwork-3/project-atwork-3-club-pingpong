@@ -406,6 +406,7 @@ export interface ApiDrinkDrink extends Struct.CollectionTypeSchema {
 export interface ApiEventSignupEventSignup extends Struct.CollectionTypeSchema {
   collectionName: 'event_signups';
   info: {
+    description: '';
     displayName: 'Event_Signup';
     pluralName: 'event-signups';
     singularName: 'event-signup';
@@ -426,6 +427,7 @@ export interface ApiEventSignupEventSignup extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    reserveOption: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -568,7 +570,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    userId: Schema.Attribute.Relation<
+    user_id: Schema.Attribute.Relation<
       'oneToOne',
       'plugin::users-permissions.user'
     >;
@@ -1113,7 +1115,6 @@ export interface PluginUsersPermissionsUser
       'plugin::users-permissions.user'
     > &
       Schema.Attribute.Private;
-    order: Schema.Attribute.Relation<'oneToOne', 'api::order.order'>;
     password: Schema.Attribute.Password &
       Schema.Attribute.Private &
       Schema.Attribute.SetMinMaxLength<{

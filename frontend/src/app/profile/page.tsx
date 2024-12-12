@@ -11,6 +11,7 @@ const ProfilePage = () => {
     const [user, setUser] = useState<{
         username: string;
         email: string;
+        user_group?: { name?: string };
     } | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -19,6 +20,7 @@ const ProfilePage = () => {
             try {
                 const fetchedUser = await getUserForProfile();
                 setUser(fetchedUser);
+                console.log(fetchedUser);
             } catch (error) {
                 console.error("Error fetching user:", error);
             } finally {
@@ -29,7 +31,7 @@ const ProfilePage = () => {
     }, []);
 
     if (loading) {
-        return <LoadingSpinner></LoadingSpinner>;
+        return <LoadingSpinner />;
     }
 
     if (!user) {
@@ -44,12 +46,14 @@ const ProfilePage = () => {
         );
     }
 
+    const userGroupName = user.user_group?.name || "No group assigned";
+
     return (
-        <div className="p-1 flex flex-col items-center w-1/3 m-auto ">
+        <div className="p-1 flex flex-col items-center w-1/3 m-auto">
             <div className="mt-5 mb-5 text-center">
-                <p className="text-xl font-bold ">{user.username}</p>
+                <p className="text-xl font-bold">{user.username}</p>
                 <p>{user.email}</p>
-                <p>{user.user_group.name}</p>
+                <p>{userGroupName}</p>
             </div>
             <EditProfile />
             <button

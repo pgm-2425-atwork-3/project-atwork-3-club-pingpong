@@ -4,7 +4,8 @@
   "info": {
     "singularName": "event-signup",
     "pluralName": "event-signups",
-    "displayName": "Event_Signup"
+    "displayName": "Event_Signup",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -25,6 +26,9 @@
       "relation": "manyToMany",
       "target": "api::event.event",
       "inversedBy": "event_signups"
+    },
+    "reserveOption": {
+      "type": "string"
     }
   }
 }

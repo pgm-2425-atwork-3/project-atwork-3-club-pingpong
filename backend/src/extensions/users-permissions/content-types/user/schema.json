@@ -65,12 +65,6 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "order": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::order.order",
-      "mappedBy": "userId"
-    },
     "event_signups": {
       "type": "relation",
       "relation": "manyToMany",
