@@ -1,112 +1,142 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useCartStore from "@/store/CartStore";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Order, OrderItem } from "@/types/types";
-import { gql, request } from "graphql-request";
-import { getOrders, createOrder } from "@/graphql/orders";
+import { request } from "graphql-request";
+import { getOrders, createOrder, createOrderItem } from "@/graphql/orders";
 
 // Import the CSS
 import "@/css/checkout.css";
 
 const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
-export default function Cart({ user: { documentId } }) {
-  // const router = useRouter();
+interface User {
+  documentId: string;
+}
 
-  async function fetchOrders() {
-    const response: { orders: Order[] } = await request(
-      `${baseUrl}/graphql`,
-      getOrders
-    );
-    const orders = response.orders;
+interface CartProps {
+  user: User;
+}
 
-    return console.log(orders);
-  }
-  fetchOrders();
-
+export default function Cart({ user: { documentId } }: CartProps) {
+  const router = useRouter();
+  const [isComplete, setIsComplete] = useState(false);
+  const clearCart = useCartStore((state) => state.clearCart);
   const products = useCartStore((state) => state.items);
-  console.log(products);
-  const handleSubmit = async (e: React.FormEvent) => {
-    // Prevent the form from submitting
-    e.preventDefault();
 
-    // Create a new order object
-    const newOrder: Order = {
-      user_id: 1, // Assuming the user ID is 1
-      paymentMethod: "Payqonic",
-      dateCreated: new Date().toISOString(),
-    };
-    console.log(newOrder);
+  useEffect(() => {
+    if (isComplete) {
+      clearCart();
+    }
+  }, [isComplete]);
 
-    // Create a new order in the database
-    // await fetch(`${baseUrl}/api/orders/`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ data: newOrder }),
-    // });
-
-    // Assuming the response contains the new order ID
-    // Create a new order item for each product in the cart
-    products.forEach(async (product) => {
-      const newOrderItem: OrderItem = {
-        order_id: {
-          documentId: product.documentId,
-        },
-        drink_id: {
-          documentId: product.documentId,
-        },
-        quantity: product.quantity,
-      };
-      console.log(newOrderItem);
-
-      // Create a new order item in the database
-      await fetch(`${baseUrl}/api/order-items/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data: newOrderItem }),
-      });
-    });
-    // router.push(`/orders/${id}`);
-  };
-
-  return (
-    <>
-      <div className="checkout__summary">
-        <h2 className="checkout__summary-title">Bestelling overzicht</h2>
-        <div className="checkout__summary-details">
-          {products.map((product, index) => (
-            <div key={index} className="checkout__summary-item">
-              <span className="checkout__summary-item-name">
-                {product.name}
-              </span>
-              <span className="checkout__summary-item-quantity">
-                x{product.quantity}
-              </span>
-              <span className="checkout__summary-item-price">
-                €{product.unit_price}
-              </span>
-            </div>
-          ))}
-        </div>
-        <div className="checkout__summary-total">
-          <span>Total:</span>
-          <span>
-            €
-            {products
-              .reduce(
-                (total, product) =>
-                  total + product.unit_price * product.quantity,
-                0
-              )
-              .toFixed(2)}
-          </span>
-        </div>
+  if (isComplete) {
+    setTimeout(() => {
+      router.push("/");
+    }, 3000);
+    return (
+      <div className="checkout__complete">
+        <h2 className="checkout__complete-title">Bestelling geplaatst!</h2>
+        <p className="checkout__complete-message">
+          Bedankt voor uw bestelling. U kan uw bestelling zometeen ophalen aan
+          de bar.
+        </p>
+        <p className="checkout__complete-message">
+          U wordt zo teruggestuurd naar startpagina
+        </p>
       </div>
-    </>
-  );
+    );
+  } else {
+    // handleSubmit function
+    const handleSubmit = async (e: React.FormEvent) => {
+      // Prevent the default form submission
+      e.preventDefault();
+
+      // Create an order
+      const orderData = {
+        data: {
+          user_id: 1,
+          paymentMethod: "Payconiq",
+          total: products.reduce(
+            (total, product) => total + product.unit_price * product.quantity,
+            0
+          ),
+        },
+      };
+
+      try {
+        // Send a request to create an order
+        const response = await request(
+          `${baseUrl}/graphql`,
+          createOrder,
+          orderData
+        );
+        console.log("Order created:", response);
+
+        // Get the id of the created order
+        const orderId = (response as { createOrder: { documentId: string } })
+          .createOrder.documentId;
+        console.log("Order created with id:", orderId);
+
+        // Create order items for each product in the cart
+        await Promise.all(
+          products.map((product) =>
+            request(`${baseUrl}/graphql`, createOrderItem, {
+              data: {
+                order: orderId,
+                drink: product.documentId,
+                quantity: product.quantity,
+              },
+            })
+          )
+        );
+
+        // Set the state to complete
+        setIsComplete(true);
+        console.log("Order created successfully");
+      } catch (error) {
+        console.error("Error creating order:", error);
+      }
+    };
+
+    return (
+      <>
+        <div className="checkout__summary">
+          <h2 className="checkout__summary-title">Bestelling overzicht</h2>
+          <div className="checkout__summary-details">
+            {products.map((product, index) => (
+              <div key={index} className="checkout__summary-item">
+                <span className="checkout__summary-item-name">
+                  {product.name}
+                </span>
+                <span className="checkout__summary-item-quantity">
+                  x{product.quantity}
+                </span>
+                <span className="checkout__summary-item-price">
+                  €{product.unit_price}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className="checkout__summary-total">
+            <span>Total:</span>
+            <span>
+              €
+              {products
+                .reduce(
+                  (total, product) =>
+                    total + product.unit_price * product.quantity,
+                  0
+                )
+                .toFixed(2)}
+            </span>
+          </div>
+        </div>
+        <button className="checkout__button" onClick={handleSubmit}>
+          Checkout
+        </button>
+      </>
+    );
+  }
 }

@@ -18,22 +18,16 @@
     "unit_price": {
       "type": "decimal"
     },
-    "order_items": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::order-item.order-item",
-      "mappedBy": "drinks"
-    },
     "drink_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
-
+      ]
     }
   }
 }

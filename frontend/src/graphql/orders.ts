@@ -10,12 +10,9 @@ export const getOrders = gql`
         username
       }
       order_items {
-        documentId
-        quantity
-        drink_id {
-          name
-          unit_price
+        drink {
           documentId
+          name
         }
       }
     }
@@ -26,13 +23,25 @@ export const createOrder = gql`
   mutation CreateOrder($data: OrderInput!) {
     createOrder(data: $data) {
       documentId
-      paymentMethod
       user_id {
         documentId
       }
-      order_items {
+      paymentMethod
+      total
+    }
+  }
+`;
+
+export const createOrderItem = gql`
+  mutation CreateOrderItem($data: OrderItemInput!) {
+    createOrderItem(data: $data) {
+      drink {
         documentId
       }
+      order {
+        documentId
+      }
+      quantity
     }
   }
 `;

@@ -1,6 +1,5 @@
 "use client";
 
-import { get } from "http";
 import useCartStore from "../../store/CartStore";
 import "@/css/cart.css";
 import Link from "next/link";
@@ -15,7 +14,6 @@ interface CartItem {
 
 export default function Cart() {
   const { items, removeFromCart, updateQty } = useCartStore((state) => state);
-  console.log(items)
   const subtotal = items.reduce(
     (total, item) => total + item.unit_price * item.quantity,
     0

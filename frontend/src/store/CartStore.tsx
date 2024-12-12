@@ -19,6 +19,7 @@ interface CartSate {
   addToCart: (drink: Drink) => void;
   removeFromCart: (documentId: string) => void;
   updateQty: (type: "increment" | "decrement", documentId: string) => void;
+  clearCart: () => void;
 }
 
 const useCartStore = create<CartSate>()(
@@ -77,12 +78,17 @@ const useCartStore = create<CartSate>()(
                 ? {
                     ...item,
                     quantity:
-                      type === "decrement" ? item.quantity - 1 : item.quantity + 1,
+                      type === "decrement"
+                        ? item.quantity - 1
+                        : item.quantity + 1,
                   }
                 : item
             ),
           });
         }
+      },
+      clearCart: () => {
+        set({ items: [] });
       },
     }),
     {

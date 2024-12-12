@@ -391,10 +391,6 @@ export interface ApiDrinkDrink extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::drink.drink'> &
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
-    order_items: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::order-item.order-item'
-    >;
     publishedAt: Schema.Attribute.DateTime;
     unit_price: Schema.Attribute.Decimal;
     updatedAt: Schema.Attribute.DateTime;
@@ -516,13 +512,14 @@ export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    drink_id: Schema.Attribute.Relation<'oneToOne', 'api::drink.drink'>;
+    drink: Schema.Attribute.Relation<'oneToOne', 'api::drink.drink'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::order-item.order-item'
     > &
       Schema.Attribute.Private;
+    order: Schema.Attribute.Relation<'manyToOne', 'api::order.order'>;
     publishedAt: Schema.Attribute.DateTime;
     quantity: Schema.Attribute.Integer;
     updatedAt: Schema.Attribute.DateTime;
@@ -556,6 +553,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     >;
     paymentMethod: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    total: Schema.Attribute.Decimal;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
