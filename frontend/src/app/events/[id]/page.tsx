@@ -18,6 +18,10 @@ export default function EventDetail() {
     const [loading, setLoading] = useState(true);
     const [signupStatus, setSignupStatus] = useState("");
     const [message, setMessage] = useState("");
+    const [isSignedUp, setIsSignedUp] = useState(false); // Track if the user is signed up
+    const [signedUpUsers, setSignedUpUsers] = useState<
+        { id: string; username: string }[]
+    >([]); // List of users signed up for the event
 
     useEffect(() => {
         if (id) {
@@ -55,12 +59,33 @@ export default function EventDetail() {
                 const data = await response.json();
                 if (data.data && data.data.length > 0) {
                     setMessage("You have already signed up for this event.");
+                    setIsSignedUp(true); // User is signed up
                 } else {
                     setMessage(""); // Clear the message if not signed up
+                    setIsSignedUp(false); // User is not signed up
                 }
             } catch (error) {
                 console.error("Error checking signup:", error);
                 setMessage("An error occurred. Please try again.");
+            }
+        }
+    };
+
+    const fetchSignedUpUsers = async () => {
+        if (event) {
+            try {
+                const response = await fetch(
+                    `http://localhost:1337/api/event-signups?filters[eventId][$eq]=${event.id}&populate[userId]=true`
+                );
+                const data = await response.json();
+                const users = data.data.map((signup: any) => ({
+                    id: signup.userId[0]?.id, // Accessing the nested userId array and retrieving the user id
+                    username: signup.userId[0]?.username, // Same for username
+                }));
+                console.log("Signed up users:", users);
+                setSignedUpUsers(users);
+            } catch (error) {
+                console.error("Error fetching signed up users:", error);
             }
         }
     };
@@ -105,6 +130,8 @@ export default function EventDetail() {
 
             if (response.ok) {
                 setMessage("Successfully signed up for the event!");
+                setIsSignedUp(true); // Set user as signed up
+                fetchSignedUpUsers(); // Fetch the updated list of signed-up users
             } else {
                 setMessage("Failed to sign up for the event.");
             }
@@ -117,6 +144,7 @@ export default function EventDetail() {
     useEffect(() => {
         // Check if the user is already signed up whenever the user or event state changes
         checkExistingSignup();
+        fetchSignedUpUsers(); // Fetch users signed up for the event
     }, [user, event]);
 
     if (loading) {
@@ -130,58 +158,84 @@ export default function EventDetail() {
     return (
         <div className="p-5">
             <h1 className="text-2xl font-bold text-main">
-                {event.home_team.team_name} vs {event.opponent_team.team_name}
+                {event.title}
+                {/* changine into  {event.home_team.team_name} vs   {event.opponent_team.team_name} */}
             </h1>
             <p className="text-gray">{event.description}</p>
 
-            {message && <p className="mt-3">{message}</p>}
+            {isSignedUp ? (
+                <p className="mt-3 text-green-500">
+                    You are already signed up for this event.
+                </p>
+            ) : (
+                <div className="mt-5">
+                    <h2>Kom jij mee deelnemen?</h2>
+
+                    <div>
+                        <label>
+                            <input
+                                type="radio"
+                                name="signup"
+                                value="aanwezig"
+                                onChange={(e) =>
+                                    setSignupStatus(e.target.value)
+                                }
+                                className="mr-2 accent-main"
+                            />
+                            Aanwezig
+                        </label>
+                    </div>
+
+                    <div>
+                        <label>
+                            <input
+                                type="radio"
+                                name="signup"
+                                value="niet aanwezig"
+                                onChange={(e) =>
+                                    setSignupStatus(e.target.value)
+                                }
+                                className="mr-2 accent-main"
+                            />
+                            Niet aanwezig
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input
+                                type="radio"
+                                name="signup"
+                                value="reserve"
+                                onChange={(e) =>
+                                    setSignupStatus(e.target.value)
+                                }
+                                className="mr-2 accent-main"
+                            />
+                            Reserve
+                        </label>
+                    </div>
+                    <button
+                        className="w-fit py-2 px-4 border border-transparent rounded-xl shadow-sm text-sm text-white bg-main hover:bg-main-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main font-bold drop-shadow-xl"
+                        onClick={handleSignup}
+                    >
+                        Submit
+                    </button>
+                </div>
+            )}
 
             <div className="mt-5">
-                <h2>Kom jij mee deelnemen?</h2>
-
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="signup"
-                            value="aanwezig"
-                            onChange={(e) => setSignupStatus(e.target.value)}
-                            className="mr-2 accent-main"
-                        />
-                        Aanwezig
-                    </label>
-                </div>
-
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="signup"
-                            value="niet aanwezig"
-                            onChange={(e) => setSignupStatus(e.target.value)}
-                            className="mr-2 accent-main"
-                        />
-                        Niet aanwezig
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="signup"
-                            value="reserve"
-                            onChange={(e) => setSignupStatus(e.target.value)}
-                            className="mr-2 accent-main"
-                        />
-                        Reserve
-                    </label>
-                </div>
-                <button
-                    className="w-fit py-2 px-4 border border-transparent rounded-xl shadow-sm text-sm text-white bg-main hover:bg-main-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main font-bold drop-shadow-xl"
-                    onClick={handleSignup}
-                >
-                    Submit
-                </button>
+                <h2 className="text-lg font-semibold">
+                    Users who have signed up:
+                </h2>
+                <ul>
+                    {signedUpUsers.length > 0 ? (
+                        signedUpUsers.map((user) => (
+                            <li key={user.id}>{user.username}</li>
+                        ))
+                    ) : (
+                        <p>No users have signed up for this event yet.</p>
+                    )}
+                </ul>
             </div>
         </div>
     );
