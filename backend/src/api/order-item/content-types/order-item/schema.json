@@ -15,7 +15,13 @@
     "quantity": {
       "type": "integer"
     },
-    "drink_id": {
+    "order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "inversedBy": "order_items"
+    },
+    "drink": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::drink.drink"

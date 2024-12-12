@@ -61,14 +61,15 @@ export type Order = {
   user_id: number;
   dateCreated: string;
   paymentMethod: string;
+  total: number;
 };
 
 export type OrderItem = {
   // id: number;
-  order_id: {
+  order: {
     documentId: string;
   };
-  drink_id: {
+  drink: {
     documentId: string;
   };
   quantity: number;
