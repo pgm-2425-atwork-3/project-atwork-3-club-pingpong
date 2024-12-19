@@ -30,7 +30,6 @@ export default function Cafetaria() {
   return (
     <div className="cafetaria">
       <main className="cafetaria__main">
-        <h1 className="cafetaria__title">Onze dranken</h1>
         <div className="cafetaria__products-grid">
           {drinks.length > 0 ? (
             drinks.map((drink, index) => (
@@ -42,7 +41,7 @@ export default function Cafetaria() {
         </div>
       </main>
       {cart.length > 0 && (
-        <LinkBottom label="Bekijk winkelmandje" url="/cart" />
+        <LinkBottom label="Bekijk winkelmandje" url="/winkelwagen" />
       )}
     </div>
   );
