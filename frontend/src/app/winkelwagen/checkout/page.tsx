@@ -7,4 +7,3 @@ export default async function Checkout() {
   console.log(session);
   return <Cart user={session} />;
 }
-

@@ -4,17 +4,19 @@ export const getOrders = gql`
   query Orders {
     orders {
       documentId
-      paymentMethod
       user_id {
-        documentId
         username
+        documentId
       }
+      total
       order_items {
+        documentId
         drink {
-          documentId
           name
         }
+        quantity
       }
+      paymentMethod
     }
   }
 `;
@@ -23,6 +25,7 @@ export const createOrder = gql`
   mutation CreateOrder($data: OrderInput!) {
     createOrder(data: $data) {
       documentId
+      dateCreated
       user_id {
         documentId
       }

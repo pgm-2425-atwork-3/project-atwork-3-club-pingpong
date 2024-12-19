@@ -1,6 +1,8 @@
 @import url("./nav.css");
 @import url("./link-bottom.css");
 @import url("./cafetaria.css");
-@import url("./list-item.css") body {
+@import url("./list-item.css");
+
+body {
     background-color: #f9f9f9;
 }
