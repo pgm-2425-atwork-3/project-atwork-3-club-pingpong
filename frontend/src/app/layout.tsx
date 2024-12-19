@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import Navigation from "@/components/Navigation";
 import "@/css/main.css";
 import { getServerSession } from "next-auth";
+import Header from "@/components/Header";
 
 const Roboto = localFont({
     src: "./fonts/Roboto.ttf",
@@ -25,6 +26,7 @@ export default async function RootLayout({
     return (
         <html lang="en">
             <body>
+                <Header />
                 <Toaster position="top-center" reverseOrder={false} />
                 {children}
                 <Navigation />
