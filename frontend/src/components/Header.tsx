@@ -6,7 +6,11 @@ import "@/css/header.css";
 
 export default function Header() {
   const pathname = usePathname();
-  const displayPath = pathname.slice(1);
+  let displayPath = pathname.slice(1);
+
+  if (displayPath === "") {
+    displayPath = "Home";
+  }
 
   return (
     <header className="header">
