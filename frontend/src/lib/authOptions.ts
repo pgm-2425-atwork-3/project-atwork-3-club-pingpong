@@ -88,20 +88,22 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id; // Ensure the role is correctly set
         token.accessToken = user.accessToken; // Save access token here
-        token = { ...token, ...user }; // Merge the user object with the token
+        token.role = user.role; // Save role here
+        // token = { ...token, ...user }; // Merge the user object with the token
       }
       console.log("JWT Callback - Token Role:", token.role); // Log the token role to ensure it's set properly
       return token;
     },
-    async session({ session, token }) {
-      if (token && session.user) {
-        session.user.id = token.id;
-        session.accessToken = token.accessToken;
+    async session({ session, token, user }) {
+      console.log("Session Callback - Token Role:", token.role); // Log token role to verify
+      // if (token && session.user) {
+      if (session.user) {
+        session.user.id = token.id as string; // Ensure the role is correctly set
+        session.accessToken = token.accessToken as string;
         session = { ...session, ...token }; // Merge the session object with the token
-        return session;
       }
       console.log("Session Callback - Session Role:", session.user.role); // Log session role to verify
-      return session;
+      return { ...session, extra: "data" };
     },
   },
 };

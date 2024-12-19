@@ -4,14 +4,6 @@ import useCartStore from "../../store/CartStore";
 import "@/css/cart.css";
 import Link from "next/link";
 
-interface CartItem {
-  id: number;
-  title: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
-
 export default function Cart() {
   const { items, removeFromCart, updateQty } = useCartStore((state) => state);
   const subtotal = items.reduce(
@@ -25,7 +17,7 @@ export default function Cart() {
     <div className="cart">
       <main className="cart__main">
         <h1 className="cart__title">
-          Your Cart({items.reduce((sum, i) => sum + i.quantity, 0)})
+          Uw bestelling ({items.reduce((sum, i) => sum + i.quantity, 0)})
         </h1>
         <div className="cart__content">
           <div className="cart__items">
@@ -63,16 +55,16 @@ export default function Cart() {
                   onClick={() => removeFromCart(item.documentId)}
                   className="cart-item__remove-button"
                 >
-                  Remove
+                  Verwijder
                 </button>
               </div>
             ))}
           </div>
           <div className="cart__summary">
             <div className="summary">
-              <h2 className="summary__title">Order Summary</h2>
+              <h2 className="summary__title">Bestelling overzicht</h2>
               <div className="summary__item">
-                <span>Subtotal</span>
+                <span>Subtotaal</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
               <div className="summary__item">
@@ -80,7 +72,7 @@ export default function Cart() {
                 <span>€{tax.toFixed(2)}</span>
               </div>
               <div className="summary__total">
-                <span>Total</span>
+                <span>Totaal</span>
                 <span>€{total.toFixed(2)}</span>
               </div>
               <Link
@@ -88,7 +80,7 @@ export default function Cart() {
                 className="summary__checkout-button"
                 onClick={() => console.log(items)}
               >
-                Proceed to Checkout
+                Door naar betalen
               </Link>
             </div>
           </div>
