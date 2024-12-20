@@ -1,10 +1,14 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GitHub from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 
 const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
-export const authOptions: NextAuthOptions = {
+export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [
+    GitHub,
+    Google,
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -106,6 +110,4 @@ export const authOptions: NextAuthOptions = {
       return { ...session, extra: "data" };
     },
   },
-};
-
-export default NextAuth(authOptions);
+});
