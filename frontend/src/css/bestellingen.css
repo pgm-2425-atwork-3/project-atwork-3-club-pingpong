@@ -1,0 +1,51 @@
+.orders {
+  margin-top: 1.25rem;
+}
+
+.orders__user {
+  margin-bottom: 2rem;
+}
+
+.orders__username {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f94d1d;
+}
+
+.orders__separator {
+  margin-bottom: 0.625rem;
+  border-top: 2px solid #f94d1d;
+}
+
+.orders__list {
+  margin-top: 1.25rem;
+}
+
+.order-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: #f94d1d 2px solid;
+}
+
+.order-item__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-item__list-item {
+  display: flex;
+  gap: 0.625rem;
+  margin-bottom: 0.625rem;
+}
+
+.order-item__payment-method {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.order-item__total {
+  font-size: 0.875rem;
+  font-weight: 700;
+}

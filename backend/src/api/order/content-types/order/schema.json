@@ -31,6 +31,10 @@
     },
     "total": {
       "type": "decimal"
+    },
+    "isCompleted": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

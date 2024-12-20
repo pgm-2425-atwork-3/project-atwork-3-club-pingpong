@@ -1,4 +1,5 @@
 .cart {
+
   .cart__title {
     font-size: 1.5rem;
     font-weight: bold;
@@ -10,7 +11,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    padding: 1rem;
+    padding: 1rem 1rem 17.5rem 1rem;
   }
   .cart__items {
     display: flex;

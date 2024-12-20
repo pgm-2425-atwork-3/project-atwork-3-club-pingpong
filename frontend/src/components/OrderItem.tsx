@@ -1,24 +1,60 @@
+"use client";
 import React from "react";
 import { Order } from "@/types/types";
+import { completeOrder } from "@/graphql/orders";
+import { request } from "graphql-request";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function OrderItem({ order }: { order: Order }) {
-  console.log(order);
+  const router = useRouter();
+
+  const handleCompleteOrder = async (documentId: string) => {
+    try {
+      await request(
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/graphql`,
+        completeOrder,
+        {
+          documentId,
+          data: {
+            isCompleted: true,
+          },
+        }
+      );
+      toast.success("Bestelling is afgerond");
+    } catch (error) {
+      toast.error("Er is iets misgegaan bij het afronden van de bestelling");
+      console.log(error);
+    }
+  };
+
+
   return (
     <div className="order-item">
-      <p className="order-item__id">Order ID: {order.documentId}</p>
+      <h3 className="order-item__title">Bestelling {order.documentId}</h3>
+      <p className="order-item__date">
+        Geplaatst op: {new Date(order.dateCreated).toLocaleTimeString()}
+      </p>
       <ul className="order-item__list">
         {order.order_items.map((item) => (
           <li key={item.documentId} className="order-item__list-item">
-            <p className="order-item__item-id">Item ID: {item.documentId}</p>
-            <p className="order-item__drink">Drink: {item.drink.name}</p>
-            <p className="order-item__quantity">Quantity: {item.quantity}</p>
+            <p className="order-item__quantity">{item.quantity}x</p>
+            <p className="order-item__drink">{item.drink.name}</p>
           </li>
         ))}
       </ul>
       <p className="order-item__payment-method">
-        Payment Method: {order.paymentMethod}
+        Betaalwijze: {order.paymentMethod}
       </p>
-      <p className="order-item__total">Total: {order.total}</p>
+      <p className="order-item__total">totaalbedrag: €{order.total}</p>
+      {!order.isCompleted && (
+        <button
+          onClick={() => handleCompleteOrder(order.documentId)}
+          className="order-item__complete"
+        >
+          Bestelling afronden
+        </button>
+      )}
     </div>
   );
 }

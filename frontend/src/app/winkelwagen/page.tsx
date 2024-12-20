@@ -1,7 +1,7 @@
 "use client";
 
 import useCartStore from "../../store/CartStore";
-import "@/css/cart.css";
+import "@/css/winkelwagen.css";
 import Link from "next/link";
 
 export default function Cart() {
@@ -76,7 +76,7 @@ export default function Cart() {
                 <span>€{total.toFixed(2)}</span>
               </div>
               <Link
-                href="cart/checkout"
+                href="winkelwagen/afrekennen"
                 className="summary__checkout-button"
                 onClick={() => console.log(items)}
               >

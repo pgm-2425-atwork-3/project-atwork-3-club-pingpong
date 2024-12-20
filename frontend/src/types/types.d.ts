@@ -58,19 +58,25 @@ export type User = {
 
 export type Order = {
   documentId: string;
-  user_id: number;
+  user_id: {
+    documentId: string;
+    username: string;
+  };
   dateCreated: string;
   paymentMethod: string;
   total: number;
+  order_items: OrderItem[];
 };
 
 export type OrderItem = {
+  documentId: string;
   // id: number;
   order: {
     documentId: string;
   };
   drink: {
     documentId: string;
+    name: string;
   };
   quantity: number;
 };

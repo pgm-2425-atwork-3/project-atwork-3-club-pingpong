@@ -12,6 +12,11 @@ export default function Header() {
     displayPath = "Home";
   }
 
+  const pathParts = displayPath.split("/");
+  if (pathParts.length > 1) {
+    displayPath = pathParts[1];
+  }
+
   return (
     <header className="header">
       <h1 className="header__title">{displayPath}</h1>

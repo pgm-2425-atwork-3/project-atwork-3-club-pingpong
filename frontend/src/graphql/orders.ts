@@ -1,4 +1,4 @@
-import { gql, request } from "graphql-request";
+import { gql } from "graphql-request";
 
 export const getOrders = gql`
   query Orders {
@@ -17,6 +17,29 @@ export const getOrders = gql`
         quantity
       }
       paymentMethod
+      dateCreated
+    }
+  }
+`;
+
+export const getUncompletedOrders = gql`
+  query Orders($filters: OrderFiltersInput) {
+    orders(filters: $filters) {
+      documentId
+      user_id {
+        username
+        documentId
+      }
+      total
+      order_items {
+        documentId
+        drink {
+          name
+        }
+        quantity
+      }
+      paymentMethod
+      dateCreated
     }
   }
 `;
@@ -45,6 +68,14 @@ export const createOrderItem = gql`
         documentId
       }
       quantity
+    }
+  }
+`;
+
+export const completeOrder = gql`
+  mutation Mutation($documentId: ID!, $data: OrderInput!) {
+    updateOrder(documentId: $documentId, data: $data) {
+      isCompleted
     }
   }
 `;

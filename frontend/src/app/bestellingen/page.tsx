@@ -1,9 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
+
+// Import the Order type
 import { Order } from "@/types/types";
-import { getOrders } from "@/graphql/orders";
+
+// Import the GraphQL query
+import { getUncompletedOrders } from "@/graphql/orders";
 import { request } from "graphql-request";
+
+// Import the OrderItem component
 import OrderItem from "@/components/OrderItem";
+
+// Import the CSS
+import "@/css/bestellingen.css";
+import EmptyView from "@/components/EmptyView";
 
 const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
@@ -12,9 +22,16 @@ export default function Orders() {
 
   useEffect(() => {
     async function fetchOrders() {
-      const response: { orders: Order[] } = await request(
+      const response = await request(
         `${baseUrl}/graphql`,
-        getOrders
+        getUncompletedOrders,
+        {
+          filters: {
+            isCompleted: {
+              eq: false,
+            },
+          },
+        }
       );
 
       setOrders(response.orders);
@@ -33,11 +50,15 @@ export default function Orders() {
     ),
   ];
 
+  if (orders.length === 0) {
+    return <EmptyView text="Geen openstaande bestellingen" />;
+  }
   return (
     <div className="orders">
       {filteredUsers.map((username) => (
         <div key={username} className="orders__user">
           <h2 className="orders__username">{username}</h2>
+          <hr className="orders__separator" />
           <ul className="orders__list">
             {orders
               .filter((order) => order.user_id.username === username)

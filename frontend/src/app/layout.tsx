@@ -8,29 +8,31 @@ import { getServerSession } from "next-auth";
 import Header from "@/components/Header";
 
 const Roboto = localFont({
-    src: "./fonts/Roboto.ttf",
-    variable: "--font-geist-sans",
-    weight: "100 900",
+  src: "./fonts/Roboto.ttf",
+  variable: "--font-geist-sans",
+  weight: "100 900",
 });
 
 export const metadata = {
-    title: "Club Ping Pong",
-    description: "Club Ping Pong",
+  title: "Club Ping Pong",
+  description: "Club Ping Pong",
 };
 
 export default async function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-            <body>
-                <Header />
-                <Toaster position="top-center" reverseOrder={false} />
-                {children}
-                <Navigation />
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body>
+        <Header />
+        <div className="container">
+          <Toaster position="top-center" reverseOrder={false} />
+          {children}
+        </div>
+        <Navigation />
+      </body>
+    </html>
+  );
 }

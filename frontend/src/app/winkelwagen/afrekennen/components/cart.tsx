@@ -13,11 +13,12 @@ import { BsCashStack } from "react-icons/bs";
 import { RiBankCard2Line } from "react-icons/ri";
 
 // Import the CSS
-import "@/css/checkout.css";
+import "@/css/afrekennen.css";
 
 const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
 interface User {
+  id: number;
   documentId: string;
 }
 
@@ -25,7 +26,7 @@ interface CartProps {
   user: User;
 }
 
-export default function Cart({ user: { documentId } }: CartProps) {
+export default function Cart({ user }: CartProps) {
   const router = useRouter();
   const clearCart = useCartStore((state) => state.clearCart);
   const products = useCartStore((state) => state.items);
@@ -65,9 +66,10 @@ export default function Cart({ user: { documentId } }: CartProps) {
     // Create an order
     const orderData = {
       data: {
-        user_id: 1,
+        user_id: user.id,
         paymentMethod: paymentMethod,
         total: total,
+        dateCreated: new Date().toISOString(),
       },
     };
 

@@ -1,10 +1,11 @@
 .link-bottom {
-    position: fixed;
-    bottom: 5rem;
-    background-color: #F94D1D;
-    color: white;   
-    width: 100%;
-    height: 3rem;
-    text-align: center;
-    padding: .75rem;
+  position: fixed;
+  bottom: 5rem;
+  left: 0;
+  background-color: #f94d1d;
+  color: white;
+  width: 100%;
+  height: 3rem;
+  text-align: center;
+  padding: 0.75rem;
 }
