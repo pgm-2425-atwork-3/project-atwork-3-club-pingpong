@@ -36,7 +36,8 @@ export default function Orders() {
         }
       );
 
-      setOrders(response.orders);
+      const data = response as { orders: Order[] };
+      setOrders(data.orders);
       setIsLoading(false);
     }
 
