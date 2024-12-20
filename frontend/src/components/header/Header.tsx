@@ -2,7 +2,7 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
-import "@/css/header.css";
+import "./header.css";
 
 export default function Header() {
   const pathname = usePathname();

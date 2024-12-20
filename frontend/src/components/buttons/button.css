@@ -1,0 +1,26 @@
+.main-btn {
+    background-color: #f5f5f5;
+    color: #f94f1f;
+    border: 1px solid #f94f1f;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.main-btn:hover {
+    background-color: #f94f1f;
+    color: #f5f5f5;
+}
+
+.main-btn.delete-btn {
+    background-color: #f94f1f;
+    color: #f5f5f5;
+    border: 1px solid #f94f1f;
+    width: 6rem;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}

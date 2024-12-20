@@ -4,7 +4,7 @@ import React from "react";
 import { GiShoppingCart } from "react-icons/gi";
 
 // import the CSS
-import "@/css/empty-view.css";
+import "./empty-view.css";
 
 export default function EmptyView({ text }: { text: string }) {
   return (
