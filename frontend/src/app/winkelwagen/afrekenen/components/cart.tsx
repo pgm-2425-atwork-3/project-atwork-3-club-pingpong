@@ -142,7 +142,7 @@ export default function Cart({ user }: CartProps) {
                   x{product.quantity}
                 </span>
                 <span className="checkout__summary-item-price">
-                  €{product.unit_price}
+                  €{product.unit_price * product.quantity}
                 </span>
               </div>
             ))}
