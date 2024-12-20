@@ -11,14 +11,16 @@ import { request } from "graphql-request";
 // Import the OrderItem component
 import OrderItem from "@/components/OrderItem";
 
-// Import the CSS
+// Import the CSS and views
 import "@/css/bestellingen.css";
-import EmptyView from "@/components/EmptyView";
+import EmptyView from "@/components/empty-view/EmptyView";
+import LoadingView from "@/components/loading-view/LoadingView";
 
 const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
 export default function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchOrders() {
@@ -35,6 +37,7 @@ export default function Orders() {
       );
 
       setOrders(response.orders);
+      setIsLoading(false);
     }
 
     fetchOrders();
@@ -49,6 +52,10 @@ export default function Orders() {
         .flatMap((order) => order.user_id.username)
     ),
   ];
+
+  if (isLoading) {
+    return <LoadingView />;
+  }
 
   if (orders.length === 0) {
     return <EmptyView text="Geen openstaande bestellingen" />;
