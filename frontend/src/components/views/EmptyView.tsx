@@ -4,13 +4,13 @@ import React from "react";
 import { GiShoppingCart } from "react-icons/gi";
 
 // import the CSS
-import "./empty-view.css";
+import './views.css';
 
 export default function EmptyView({ text }: { text: string }) {
   return (
-    <div className="empty-view">
-      <p className="empty-view__text">{text}</p>
-      <GiShoppingCart className="empty-view__icon" />
+    <div className="notification-view">
+      <p className="notification-view__text">{text}</p>
+      <GiShoppingCart className="notification-view__icon" />
     </div>
   );
 }

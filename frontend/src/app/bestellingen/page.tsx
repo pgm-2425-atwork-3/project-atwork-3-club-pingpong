@@ -13,32 +13,39 @@ import OrderItem from "@/components/OrderItem";
 
 // Import the CSS and views
 import "@/css/bestellingen.css";
-import EmptyView from "@/components/empty-view/EmptyView";
-import LoadingView from "@/components/loading-view/LoadingView";
+import EmptyView from "@/components/views/EmptyView";
+import LoadingView from "@/components/views/LoadingView";
+import ErrorView from "@/components/views/ErrorView";
 
 const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
 export default function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchOrders() {
-      const response = await request(
-        `${baseUrl}/graphql`,
-        getUncompletedOrders,
-        {
-          filters: {
-            isCompleted: {
-              eq: false,
+      try {
+        const response = await request(
+          `${baseUrl}/graphql`,
+          getUncompletedOrders,
+          {
+            filters: {
+              isCompleted: {
+                eq: false,
+              },
             },
-          },
-        }
-      );
+          }
+        );
 
-      const data = response as { orders: Order[] };
-      setOrders(data.orders);
-      setIsLoading(false);
+        const data = response as { orders: Order[] };
+        setOrders(data.orders);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setIsLoading(false);
+      }
     }
 
     fetchOrders();
@@ -56,6 +63,10 @@ export default function Orders() {
 
   if (isLoading) {
     return <LoadingView />;
+  }
+
+  if (error) {
+    return <ErrorView text="Er is iets fout gegaan" />;
   }
 
   if (orders.length === 0) {
