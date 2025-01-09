@@ -1,5 +1,10 @@
+import React from "react";
+
+// import icon
 import { Atom } from "react-loading-indicators";
-import "./loading-view.css";
+
+// import the CSS
+import "./views.css";
 
 export default function LoadingView() {
   return (

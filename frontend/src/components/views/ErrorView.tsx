@@ -1,7 +1,13 @@
 import React from "react";
+
+// import icon
 import { CgDanger } from "react-icons/cg";
+
+// import the CSS
 import "./views.css";
 
+
+// declare the types of the props
 type ErrorViewProps = {
   text: string;
 };

@@ -4,9 +4,14 @@ import React from "react";
 import { GiShoppingCart } from "react-icons/gi";
 
 // import the CSS
-import './views.css';
+import "./views.css";
 
-export default function EmptyView({ text }: { text: string }) {
+// declare the types of the props
+interface EmptyViewProps {
+  text: string;
+}
+
+export default function EmptyView({ text }: EmptyViewProps) {
   return (
     <div className="notification-view">
       <p className="notification-view__text">{text}</p>
