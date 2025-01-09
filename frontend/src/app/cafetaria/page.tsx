@@ -7,25 +7,30 @@ import { Drink } from "@/types/types";
 import { request } from "graphql-request";
 import { useEffect, useState } from "react";
 import useCartStore from "@/store/CartStore";
-import EmptyView from "@/components/empty-view/EmptyView";
-import LoadingView from "@/components/loading-view/LoadingView";
+import EmptyView from "@/components/views/EmptyView";
+import LoadingView from "@/components/views/LoadingView";
 
 const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
 export default function Cafetaria() {
   const [drinks, setDrinks] = useState<Drink[]>([]);
   const [isLoading, setIsloading] = useState(true);
+  const [error, setError] = useState("");
   const cart = useCartStore((state) => state.items);
 
   useEffect(() => {
     async function fetchDrinks() {
-      const response: { drinks: Drink[] } = await request(
-        `${baseUrl}/graphql`,
-        getDrinks
-      );
-
-      setDrinks(response.drinks);
-      setIsloading(false);
+      try {
+        const response: { drinks: Drink[] } = await request(
+          `${baseUrl}/graphql`,
+          getDrinks
+        );
+        setDrinks(response.drinks);
+        setIsloading(false);
+      } catch (error) {
+        setError(error.message);
+        setIsloading(false);
+      }
     }
 
     fetchDrinks();
@@ -33,6 +38,9 @@ export default function Cafetaria() {
 
   if (isLoading) {
     return <LoadingView />;
+  }
+  if (error) {
+    return <EmptyView text="Er is iets fout gegaan" />;
   }
 
   if (!drinks) {

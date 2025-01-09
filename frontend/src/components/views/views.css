@@ -1,4 +1,6 @@
-.empty-view {
+/* CSS for the loading, error and message views */
+
+.notification-view {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -11,11 +13,18 @@
   text-align: center;
 }
 
-.empty-view__text {
+.notification-view__text {
   margin-top: 1.25rem;
 }
 
-.empty-view__icon {
+.notification-view__icon {
   font-size: 10rem;
   color: #f94d1d75;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 75vh;
 }
