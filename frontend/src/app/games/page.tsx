@@ -11,7 +11,6 @@ export default function Games() {
             try {
                 const fetchedGroups = await getGroups();
                 setGroups(fetchedGroups);
-                console.log("Fetched groups:", fetchedGroups);
             } catch (error) {
                 console.error("Error fetching groups:", error);
             }
@@ -34,7 +33,7 @@ export default function Games() {
                             {group.name}
                         </h2>
                         <a
-                            href={`/games/${group.id}`}
+                            href={`/games/${group.documentId}`}
                             className="text-sm text-white hover:underline mt-2 block"
                         >
                             Bekijk groep

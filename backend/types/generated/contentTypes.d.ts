@@ -402,6 +402,7 @@ export interface ApiDrinkDrink extends Struct.CollectionTypeSchema {
 export interface ApiEventSignupEventSignup extends Struct.CollectionTypeSchema {
   collectionName: 'event_signups';
   info: {
+    description: '';
     displayName: 'Event_Signup';
     pluralName: 'event-signups';
     singularName: 'event-signup';
@@ -410,6 +411,7 @@ export interface ApiEventSignupEventSignup extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    choice: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

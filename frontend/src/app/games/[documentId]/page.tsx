@@ -1,26 +1,36 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { getEvents } from "@/actions/getEvents";
+import { getEventByGroup } from "@/actions/getEvents";
 import { Event } from "@/types/types";
 
 export default function GroupDetail() {
-    const [events, setEvents] = useState<Event[]>([]); // Store fetched events
-    const router = useRouter();
-    const { groupId } = router.query; // Get groupId from the route
+    const [groupId, setGroupId] = useState<string | null>(null);
+    const [events, setEvents] = useState<Event[]>([]);
+
+    useEffect(() => {
+        // Access the URL path directly
+        const pathname = window.location.pathname;
+        const parts = pathname.split("/"); // Split the URL path into segments
+        const groupIdFromUrl = parts[parts.length - 1]; // The last segment will be the documentId
+
+        console.log("Group ID from URL:", groupIdFromUrl);
+
+        if (groupIdFromUrl) {
+            setGroupId(groupIdFromUrl);
+        }
+    }, []); // This runs only once on component mount
 
     useEffect(() => {
         if (!groupId) return;
 
         const fetchGroupEvents = async () => {
             try {
-                const fetchedEvents = await getEvents(); // Fetch all events
-                const filteredEvents = fetchedEvents.filter(
-                    (event) => event.user_group.documentId === groupId
-                ); // Filter events by groupId
-                setEvents(filteredEvents);
+                const fetchedEvents = await getEventByGroup(groupId);
+                setEvents(fetchedEvents);
+                console.log("Fetched events:", fetchedEvents);
             } catch (error) {
-                console.error("Error fetching events:", error);
+                console.error("Error fetching events by group:", error);
             }
         };
 

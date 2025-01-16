@@ -47,6 +47,7 @@ export type Group = {
     name: string;
     description: string;
     image: string;
+    documentId: string;
 };
 
 export type User = {
@@ -87,14 +88,18 @@ export type Event = {
     title: string;
     location: string;
     eventDate: string;
+    description: string;
     user_group: {
         documentId: string;
+        id: number;
+        name: string;
     };
     event_signups: {
         documentId: string;
         user: {
             documentId: string;
             username: string;
+            choice: string;
         };
     };
 };
