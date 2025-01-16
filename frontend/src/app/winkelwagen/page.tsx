@@ -18,7 +18,7 @@ export default function Cart() {
   const { items } = useCartStore((state) => state);
 
   const subtotal = items.reduce(
-    (total, item) => total + item.unit_price * item.quantity,
+    (total, item) => total += (item.unit_price * item.quantity),
     0
   );
   const tax = subtotal * 0.1; // Assuming 10% tax

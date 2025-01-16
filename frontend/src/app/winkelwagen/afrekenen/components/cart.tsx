@@ -40,7 +40,7 @@ export default function Cart({ user }: CartProps) {
   useEffect(() => {
     setTotal(
       products.reduce(
-        (total, product) => total + product.unit_price * product.quantity,
+        (total, product) => total += (product.unit_price * product.quantity),
         0
       )
     );
@@ -149,7 +149,7 @@ export default function Cart({ user }: CartProps) {
           </div>
           <div className="checkout__summary-total">
             <span>Total:</span>
-            <span>€{total}</span>
+            <span>{total.toFixed(2)}</span>
           </div>
         </div>
         <div className="checkout__payment-method">
