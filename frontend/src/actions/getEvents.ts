@@ -1,4 +1,5 @@
 import { Event } from "@/types/types";
+import { getUserForProfile } from "./getUserForProfile"; // Import the function
 
 export async function getEvents() {
     try {
@@ -42,10 +43,20 @@ export async function getEventById(documentId: string) {
 
 export async function signUpForEvent(
     eventId: string,
-    choice: string,
-    userId: string // Pass the user ID here
+    choice: string
 ): Promise<boolean> {
     try {
+        // Get user info
+        const user = await getUserForProfile();
+
+        if (!user) {
+            console.error("User not found or not logged in.");
+            return false;
+        }
+
+        const userId = user.id; // Get user ID
+
+        // Proceed with the event signup using the obtained userId
         const res = await fetch(`http://localhost:1337/api/event-signups`, {
             method: "POST",
             headers: {
@@ -54,8 +65,8 @@ export async function signUpForEvent(
             body: JSON.stringify({
                 data: {
                     eventId: eventId,
-                    userId: userId, // Pass the actual user ID here
-                    choice: choice, // Pass the selected status to the backend
+                    userId: userId, // Pass the userId here
+                    choice: choice,
                 },
             }),
         });
