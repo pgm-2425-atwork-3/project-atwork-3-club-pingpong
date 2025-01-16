@@ -79,3 +79,23 @@ export const completeOrder = gql`
     }
   }
 `;
+
+export const GetOrderById = gql`
+  query GetOrderById($documentId: ID!) {
+    order(documentId: $documentId) {
+      isCompleted
+      order_items {
+        drink {
+          name
+          unit_price
+        }
+        quantity
+      }
+      paymentMethod
+      total
+      user_id {
+        username
+      }
+    }
+  }
+`;
