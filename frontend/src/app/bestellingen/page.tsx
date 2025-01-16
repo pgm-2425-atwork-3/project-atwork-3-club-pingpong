@@ -62,7 +62,9 @@ export default function Orders() {
   ];
 
   if (isLoading) {
-    return <LoadingView />;
+    setTimeout(() => {
+      return <LoadingView />;
+    }, 1000);
   }
 
   if (error) {
