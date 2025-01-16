@@ -37,13 +37,15 @@ export default function Cafetaria() {
   }, []);
 
   if (isLoading) {
-    return <LoadingView />;
+    setTimeout(() => {
+      return <LoadingView />;
+    }, 1000); 
   }
   if (error) {
     return <EmptyView text="Er is iets fout gegaan" />;
   }
 
-  if (!drinks) {
+  if (!drinks || drinks.length === 0) {
     return <EmptyView text="Geen dranken beschikbaar momenteel" />;
   }
   return (
