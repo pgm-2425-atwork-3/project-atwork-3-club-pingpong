@@ -9,7 +9,7 @@ interface CartItem {
   name: string;
   unit_price: number;
   drink_image: {
-    url: string;
+    url: string | null;
     alternativeText: string;
   };
 }
@@ -49,8 +49,8 @@ const useCartStore = create<CartSate>()(
                 name: product.name,
                 unit_price: Number(product.unit_price),
                 drink_image: {
-                  url: product.drink_image.url,
-                  alternativeText: product.drink_image.alternativeText,
+                  url: product.drink_image?.url,
+                  alternativeText: product.drink_image?.alternativeText,
                 },
               },
             ],

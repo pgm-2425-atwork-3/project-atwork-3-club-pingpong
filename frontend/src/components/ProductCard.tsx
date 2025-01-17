@@ -7,7 +7,7 @@ export function ProductCard({ drink }: { drink: Drink }) {
   return (
     <div className="product-card">
       <img
-        src={drink.drink_image.url}
+        src={drink.drink_image?.url}
         alt={drink.name}
         width={300}
         height={200}

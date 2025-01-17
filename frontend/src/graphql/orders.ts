@@ -35,6 +35,7 @@ export const getUncompletedOrders = gql`
         documentId
         drink {
           name
+          unit_price
         }
         quantity
       }
@@ -76,6 +77,26 @@ export const completeOrder = gql`
   mutation Mutation($documentId: ID!, $data: OrderInput!) {
     updateOrder(documentId: $documentId, data: $data) {
       isCompleted
+    }
+  }
+`;
+
+export const GetOrderById = gql`
+  query GetOrderById($documentId: ID!) {
+    order(documentId: $documentId) {
+      isCompleted
+      order_items {
+        drink {
+          name
+          unit_price
+        }
+        quantity
+      }
+      paymentMethod
+      total
+      user_id {
+        username
+      }
     }
   }
 `;

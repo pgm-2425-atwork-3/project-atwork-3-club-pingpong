@@ -14,7 +14,12 @@ export default function Header() {
 
   const pathParts = displayPath.split("/");
   if (pathParts.length > 1) {
-    displayPath = pathParts[1];
+    const secondPart = pathParts[1];
+    if (!isNaN(Number(secondPart))) {
+      displayPath = `${pathParts[0]} - ${secondPart}`;
+    } else {
+      displayPath = pathParts[0];
+    }
   }
 
   return (
