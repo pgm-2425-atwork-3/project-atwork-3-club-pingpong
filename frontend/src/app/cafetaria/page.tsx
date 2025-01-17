@@ -1,53 +1,32 @@
-"use client";
+import React from "react";
 import LinkBottom from "@/components/LinkBottom";
 import { ProductCard } from "@/components/ProductCard";
 import "@/css/cafetaria.css";
 import { getDrinks } from "@/graphql/drinks";
 import { Drink } from "@/types/types";
 import { request } from "graphql-request";
-import { useEffect, useState } from "react";
-import useCartStore from "@/store/CartStore";
 import EmptyView from "@/components/views/EmptyView";
-import LoadingView from "@/components/views/LoadingView";
 
-const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
-
-export default function Cafetaria() {
-  const [drinks, setDrinks] = useState<Drink[]>([]);
-  const [isLoading, setIsloading] = useState(true);
-  const [error, setError] = useState("");
-  const cart = useCartStore((state) => state.items);
-
-  useEffect(() => {
-    async function fetchDrinks() {
-      try {
-        const response: { drinks: Drink[] } = await request(
-          `${baseUrl}/graphql`,
-          getDrinks
-        );
-        setDrinks(response.drinks);
-        setIsloading(false);
-      } catch (error) {
-        setError(error.message);
-        setIsloading(false);
-      }
+export default async function Cafetaria() {
+  async function fetchDrinks() {
+    try {
+      const response: { drinks: Drink[] } = await request(
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/graphql`,
+        getDrinks
+      );
+      return response.drinks as Drink[];
+    } catch (error) {
+      console.log(error);
+      return null;
     }
-
-    fetchDrinks();
-  }, []);
-
-  if (isLoading) {
-    setTimeout(() => {
-      return <LoadingView />;
-    }, 1000); 
   }
-  if (error) {
-    return <EmptyView text="Er is iets fout gegaan" />;
-  }
+
+  const drinks = await fetchDrinks();
 
   if (!drinks || drinks.length === 0) {
     return <EmptyView text="Geen dranken beschikbaar momenteel" />;
   }
+
   return (
     <div className="cafetaria">
       <main className="cafetaria__main">
@@ -57,9 +36,11 @@ export default function Cafetaria() {
           ))}
         </div>
       </main>
-      {cart.length > 0 && (
+      
+      {/* {cartLength > 0 && (
         <LinkBottom label="Bekijk winkelmandje" url="/winkelwagen" />
-      )}
+      )} */}
+      <LinkBottom label="Bekijk winkelmandje" url="/winkelwagen" />
     </div>
   );
 }

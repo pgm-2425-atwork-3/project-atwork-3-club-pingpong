@@ -22,19 +22,20 @@ export default function OrderItem({ order }: { order: Order }) {
         }
       );
       toast.success("Bestelling is afgerond");
+      setTimeout(() => {
+        router.push("bestellingen");
+      }, 1000);
     } catch (error) {
       toast.error("Er is iets misgegaan bij het afronden van de bestelling");
       console.log(error);
     }
   };
 
+  const createdAt = new Date(order.dateCreated).toLocaleTimeString("nl-NL");
 
   return (
     <div className="order-item">
-      <h3 className="order-item__title">Bestelling {order.documentId}</h3>
-      <p className="order-item__date">
-        Geplaatst op: {new Date(order.dateCreated).toLocaleTimeString()}
-      </p>
+      <p className="order-item__date">Geplaatst op: {createdAt}</p>
       <ul className="order-item__list">
         {order.order_items.map((item) => (
           <li key={item.documentId} className="order-item__list-item">
@@ -43,17 +44,21 @@ export default function OrderItem({ order }: { order: Order }) {
           </li>
         ))}
       </ul>
-      <p className="order-item__payment-method">
-        Betaalwijze: {order.paymentMethod}
-      </p>
-      <p className="order-item__total">totaalbedrag: €{order.total}</p>
-      {!order.isCompleted && (
-        <button
-          onClick={() => handleCompleteOrder(order.documentId)}
-          className="order-item__complete"
-        >
-          Bestelling afronden
-        </button>
+      {order.paymentMethod !== "tab" && (
+        <>
+          <p className="order-item__payment-method">
+            Betaalwijze: {order.paymentMethod}
+          </p>
+          <p className="order-item__total">totaalbedrag: €{order.total}</p>
+          {!order.isCompleted && (
+            <button
+              onClick={() => handleCompleteOrder(order.documentId)}
+              className="order-item__complete"
+            >
+              Bestelling afronden
+            </button>
+          )}
+        </>
       )}
     </div>
   );

@@ -160,13 +160,13 @@ export default function Cart({ user }: CartProps) {
             <input
               type="radio"
               name="paymentMethod"
-              value="cash"
-              checked={paymentMethod === "cash"}
+              value="tab"
+              checked={paymentMethod === "tab"}
               onChange={(e) => setPaymentMethod(e.target.value)}
               className="checkout__payment-method-input"
             />
             <span className="checkout__payment-method-label">
-              Contant
+              Rekening 
               <BsCashStack />
             </span>
           </label>

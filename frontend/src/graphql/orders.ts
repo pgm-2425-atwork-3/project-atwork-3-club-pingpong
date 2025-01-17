@@ -35,6 +35,7 @@ export const getUncompletedOrders = gql`
         documentId
         drink {
           name
+          unit_price
         }
         quantity
       }

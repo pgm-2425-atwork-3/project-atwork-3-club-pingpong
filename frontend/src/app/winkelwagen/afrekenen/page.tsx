@@ -1,4 +1,3 @@
-import authOptions from "@/lib/authOptions";
 import { auth } from "@/auth";
 import Cart from "./components/cart";
 
