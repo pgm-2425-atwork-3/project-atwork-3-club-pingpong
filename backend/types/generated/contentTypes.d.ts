@@ -402,6 +402,7 @@ export interface ApiDrinkDrink extends Struct.CollectionTypeSchema {
 export interface ApiEventSignupEventSignup extends Struct.CollectionTypeSchema {
   collectionName: 'event_signups';
   info: {
+    description: '';
     displayName: 'Event_Signup';
     pluralName: 'event-signups';
     singularName: 'event-signup';
@@ -410,6 +411,7 @@ export interface ApiEventSignupEventSignup extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    choice: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -435,6 +437,7 @@ export interface ApiEventSignupEventSignup extends Struct.CollectionTypeSchema {
 export interface ApiEventEvent extends Struct.CollectionTypeSchema {
   collectionName: 'events';
   info: {
+    description: '';
     displayName: 'Event';
     pluralName: 'events';
     singularName: 'event';
@@ -461,6 +464,10 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_group: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::user-group.user-group'
+    >;
   };
 }
 
@@ -609,6 +616,7 @@ export interface ApiUserGroupUserGroup extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    events: Schema.Attribute.Relation<'oneToMany', 'api::event.event'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
