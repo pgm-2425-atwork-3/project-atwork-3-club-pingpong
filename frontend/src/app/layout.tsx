@@ -17,8 +17,8 @@ export default async function RootLayout({
     return (
         <html lang="en">
             <body>
-                <Header />
                 <div className="container">
+                    <Header />
                     <Toaster position="top-center" reverseOrder={false} />
                     {children}
                 </div>

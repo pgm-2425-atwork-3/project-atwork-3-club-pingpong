@@ -35,32 +35,42 @@ const ProfilePage = () => {
 
     if (!user) {
         return (
-            <div>
-                <h1>You have no access to this page</h1>
-                <p>
-                    If you are a member please <a href="/login">login</a> to
-                    view this page
+            <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center bg-gray-100">
+                <h1 className="text-2xl font-bold text-red-500">
+                    You have no access to this page
+                </h1>
+                <p className="mt-2 text-gray-700">
+                    If you are a member, please{" "}
+                    <a href="/login" className="text-blue-500 underline">
+                        login
+                    </a>{" "}
+                    to view this page.
                 </p>
             </div>
         );
     }
 
-    const userGroupName = user.user_group?.name || "No group assigned";
-
     return (
-        <div className="p-1 flex flex-col items-center w-1/3 m-auto">
-            <div className="mt-5 mb-5 text-center">
-                <p className="text-xl font-bold">{user.username}</p>
-                <p>{user.email}</p>
-                <p>{userGroupName}</p>
+        <div className="flex flex-col items-center justify-center bg-gray-50">
+            <div className="w-full max-w-2xl px-4 py-8 mx-2 bg-white rounded-lg m-auto shadow-md md:px-8 lg:w-2/3">
+                <div className="text-center">
+                    <p className="text-2xl font-semibold text-gray-800">
+                        {user.username}
+                    </p>
+                    <p className="text-gray-600">{user.email}</p>
+                </div>
+                <div className="flex w-content flex-col items-center">
+                    <div className="mt-6 ">
+                        <EditProfile />
+                    </div>
+                    <button
+                        className="px-6 py-2 mt-8 text-sm font-medium text-white bg-red-500 rounded shadow hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-300"
+                        onClick={() => signOut()}
+                    >
+                        Sign out
+                    </button>
+                </div>
             </div>
-            <EditProfile />
-            <button
-                className="p-2 border-main border rounded w-fit mt-5"
-                onClick={() => signOut()}
-            >
-                Sign out
-            </button>
         </div>
     );
 };

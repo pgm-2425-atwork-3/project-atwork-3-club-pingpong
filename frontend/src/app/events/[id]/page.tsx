@@ -21,11 +21,9 @@ export default function EventDetail({ params }: { params: { id: string } }) {
 
         const fetchDetails = async () => {
             try {
-                // Fetch event details
                 const eventDetails = await getEventById(id);
                 setEvent(eventDetails);
 
-                // Fetch event signups
                 const signUpsData = await getEventSignUps(id);
                 setSignUps(signUpsData);
 
@@ -38,7 +36,7 @@ export default function EventDetail({ params }: { params: { id: string } }) {
         };
 
         fetchDetails();
-    }, [id]); // Re-run the effect when id changes
+    }, [id]);
 
     const handleSignUp = async () => {
         if (!userStatus) {
@@ -62,61 +60,73 @@ export default function EventDetail({ params }: { params: { id: string } }) {
     };
 
     if (loading) {
-        return <p>Loading event details...</p>;
+        return (
+            <p className="text-center text-xl font-semibold">
+                Loading event details...
+            </p>
+        );
     }
 
     if (error) {
-        return <p>{error}</p>;
+        return (
+            <p className="text-center text-xl font-semibold text-red-500">
+                {error}
+            </p>
+        );
     }
 
     if (!event) {
-        return <p>No event found.</p>;
+        return (
+            <p className="text-center text-xl font-semibold">No event found.</p>
+        );
     }
 
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold text-main">{event.title}</h1>
-            <div className="mt-4">
-                <p className="text-lg text-white">Location: {event.location}</p>
-                <p className="text-sm text-gray-300">
+        <div className="p-6 max-w-3xl mx-auto bg-white rounded-lg shadow-lg space-y-8">
+            <div className="text-center">
+                <h1 className="text-3xl font-bold text-gray-800">
+                    {event.title}
+                </h1>
+                <p className="mt-2 text-lg text-gray-600">{event.location}</p>
+                <p className="text-sm text-gray-400">
                     Date: {new Date(event.eventDate).toLocaleDateString()}
                 </p>
-                <p className="text-sm text-gray-300 mt-2">
+                <p className="mt-4 text-sm text-gray-500">
                     {event.description}
                 </p>
             </div>
 
-            <div className="mt-6">
-                <h2 className="text-lg font-semibold text-main">
-                    Choose your status:
+            <div>
+                <h2 className="text-xl font-semibold text-gray-800 text-center">
+                    Maak een keuze:
                 </h2>
-                <div className="flex space-x-4 mt-2">
+                <div className="mt-4 flex justify-center space-x-6">
                     <button
-                        className={`p-2 rounded ${
+                        className={`px-6 py-2 rounded-lg transition-colors duration-300 ${
                             userStatus === "deelnemen"
-                                ? "bg-green-500"
-                                : "bg-gray-500"
-                        }`}
+                                ? "bg-green-500 text-white"
+                                : "bg-gray-300 text-gray-800"
+                        } hover:bg-green-400`}
                         onClick={() => setUserStatus("deelnemen")}
                     >
                         Deelnemen
                     </button>
                     <button
-                        className={`p-2 rounded ${
+                        className={`px-6 py-2 rounded-lg transition-colors duration-300 ${
                             userStatus === "reserve"
-                                ? "bg-yellow-500"
-                                : "bg-gray-500"
-                        }`}
+                                ? "bg-yellow-500 text-white"
+                                : "bg-gray-300 text-gray-800"
+                        } hover:bg-yellow-400`}
                         onClick={() => setUserStatus("reserve")}
                     >
                         Reserve
                     </button>
                     <button
-                        className={`p-2 rounded ${
+                        className={`px-6 py-2 rounded-lg transition-colors duration-300 ${
                             userStatus === "niet_deelnemen"
-                                ? "bg-red-500"
-                                : "bg-gray-500"
-                        }`}
+                                ? "bg-red-500 text-white"
+                                : "bg-gray-300 text-gray-800"
+                        } hover:bg-red-400`}
                         onClick={() => setUserStatus("niet_deelnemen")}
                     >
                         Niet Deelnemen
@@ -124,26 +134,41 @@ export default function EventDetail({ params }: { params: { id: string } }) {
                 </div>
             </div>
 
-            <button
-                className="mt-4 bg-blue-500 text-white p-2 rounded"
-                onClick={handleSignUp}
-            >
-                Confirm Registration
-            </button>
+            <div className="flex justify-center">
+                <button
+                    className="mt-6 px-8 py-3 bg-main text-white text-lg rounded-lg shadow-md hover:bg-darkOrange transition duration-300"
+                    onClick={handleSignUp}
+                >
+                    Registreer
+                </button>
+            </div>
 
-            <div className="mt-6">
-                <h2 className="text-xl font-bold text-main">
+            <div>
+                <h2 className="text-xl font-semibold text-gray-800">
                     Users Signed Up:
                 </h2>
-                <ul className="list-disc pl-5">
+                <ul className="mt-4 space-y-2">
                     {signUps.length > 0 ? (
                         signUps.map((signUp) => (
                             <li
                                 key={signUp.documentId}
-                                className="text-sm text-gray-300"
+                                className="flex justify-between items-center text-sm text-gray-600"
                             >
-                                {signUp.userId[0]?.username || "Unknown User"} -{" "}
-                                {signUp.choice || "No status"}
+                                <span>
+                                    {signUp.userId[0]?.username ||
+                                        "Unknown User"}
+                                </span>
+                                <span
+                                    className={`px-3 py-1 rounded-full text-xs ${
+                                        signUp.choice === "deelnemen"
+                                            ? "bg-green-200 text-green-800"
+                                            : signUp.choice === "reserve"
+                                            ? "bg-yellow-200 text-yellow-800"
+                                            : "bg-red-200 text-red-800"
+                                    }`}
+                                >
+                                    {signUp.choice || "No status"}
+                                </span>
                             </li>
                         ))
                     ) : (

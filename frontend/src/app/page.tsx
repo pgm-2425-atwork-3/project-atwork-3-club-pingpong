@@ -1,11 +1,10 @@
-import Image from "next/image";
 import Card from "../components/home/Card";
 
 export default function Home() {
     return (
         <div>
             <main>
-                <div className="flex-col gap-5">
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                     <Card
                         title="Cafeteria"
                         description="Visit the cafeteria for food and drinks."

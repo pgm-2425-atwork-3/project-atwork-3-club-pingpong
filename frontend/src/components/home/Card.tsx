@@ -9,7 +9,7 @@ export default function Card({ title, description, link }) {
                 href={link}
                 className="inline-block bg-darkOrange text-white px-4 py-2 rounded-full font-medium text-sm shadow-md transition-all duration-200 hover:shadow-lg"
             >
-                Learn More →
+                Visit →
             </Link>
         </div>
     );

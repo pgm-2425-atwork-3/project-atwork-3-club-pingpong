@@ -51,10 +51,7 @@ export default function GroupDetail() {
 
     return (
         <div className="p-5">
-            <h1 className="text-xl font-bold text-main">
-                Speeldata {group.name}
-            </h1>
-            <h2 className="text-lg">Games in this group:</h2>
+            <h1 className="text-4xl mb-10 font-bold text-main">{group.name}</h1>
             {events.length > 0 ? (
                 events.map((event) => (
                     <ListItem
