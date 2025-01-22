@@ -1104,6 +1104,7 @@ export interface PluginUsersPermissionsUser
       'api::event-signup.event-signup'
     >;
     games: Schema.Attribute.Relation<'manyToMany', 'api::game.game'>;
+    isAdmin: Schema.Attribute.Boolean;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1126,6 +1127,10 @@ export interface PluginUsersPermissionsUser
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_group: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::user-group.user-group'
+    >;
     username: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique &

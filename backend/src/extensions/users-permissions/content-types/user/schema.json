@@ -82,6 +82,14 @@
       "relation": "manyToMany",
       "target": "api::team.team",
       "inversedBy": "users"
+    },
+    "isAdmin": {
+      "type": "boolean"
+    },
+    "user_group": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::user-group.user-group"
     }
   }
 }

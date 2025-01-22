@@ -117,3 +117,35 @@ export async function getEventSignUps(eventDocumentId: string) {
         return [];
     }
 }
+
+export async function updateEventDetails(
+    documentId: string,
+    updatedData: Partial<Event>
+): Promise<Event | null> {
+    try {
+        const response = await fetch(
+            `http://localhost:1337/api/events/${documentId}`,
+            {
+                method: "PUT", // or "PATCH" depending on your API setup
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    data: updatedData, // Wrap the updated data in a `data` object if required by Strapi
+                }),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                `Failed to update event: ${response.status} ${response.statusText}`
+            );
+        }
+
+        const updatedEvent = await response.json();
+        return updatedEvent.data as Event; // Assuming the response includes the updated event data
+    } catch (error) {
+        console.error("Error updating event:", error);
+        return null;
+    }
+}
