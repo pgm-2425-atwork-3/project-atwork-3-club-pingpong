@@ -35,6 +35,10 @@
     "isCompleted": {
       "type": "boolean",
       "default": false
+    },
+    "isPaid": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
