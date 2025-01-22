@@ -19,18 +19,16 @@ const TabList = ({ orders }: { orders: Order[] }) => {
             {
               documentId: order.documentId,
               data: {
-                isCompleted: true,
+                isPaid: true,
               },
             }
           )
         )
       );
       toast.success("Rekening gesloten");
-      setTimeout(() => {
-        router.push("bestellingen");
-      }, 1000);
+      router.push("/bestellingen");
     } catch (error) {
-      toast.error("Er is iets misgegaan bij het afronden van de bestellingen");
+      toast.error("Er is iets misgegaan bij het sluiten van de rekening");
       console.log(error);
     }
   };
@@ -55,7 +53,7 @@ const TabList = ({ orders }: { orders: Order[] }) => {
   }, 0);
 
   return (
-    <div className="orders__list">
+    <div className="order-item">
       {Object.keys(groupedOrders).map((drinkName) => (
         <div key={drinkName} className="order-item__list-item">
           <p className="order-item__quantity">

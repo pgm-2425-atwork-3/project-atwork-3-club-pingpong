@@ -1,17 +1,17 @@
 import { Order } from "@/types/types";
-import { getUncompletedOrders, completeOrder } from "@/graphql/orders";
+import { getOrdersByFilter } from "@/graphql/orders";
 import { request } from "graphql-request";
 import OrderItem from "@/components/OrderItem";
 import EmptyView from "@/components/views/EmptyView";
 import "@/css/bestellingen.css";
-import TabList from "@/components/TabList";
+import Link from "next/link";
 
 export default async function Orders() {
   async function fetchOrders() {
     try {
       const response = (await request(
         `${process.env.NEXT_PUBLIC_STRAPI_URL}/graphql`,
-        getUncompletedOrders,
+        getOrdersByFilter,
         {
           filters: {
             isCompleted: {
@@ -28,20 +28,48 @@ export default async function Orders() {
     }
   }
 
-  const orders = await fetchOrders();
+  async function fetchTabs() {
+    try {
+      const response = (await request(
+        `${process.env.NEXT_PUBLIC_STRAPI_URL}/graphql`,
+        getOrdersByFilter,
+        {
+          filters: {
+            paymentMethod: {
+              eq: "tab",
+            },
+            isPaid: {
+              eq: false,
+            },
+          },
+        }
+      )) as { orders: Order[] };
 
-  const tabOrders = orders?.filter((order) => {
-    return order.paymentMethod === "tab";
-  });
+      return response.orders;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 
-  const payedOrders = orders?.filter((order) => {
-    return order.paymentMethod !== "tab";
-  });
+  const unCompletedOrders = await fetchOrders();
 
-  const filteredUsers = orders
+  const tabs = await fetchTabs();
+
+  const userTabOrders = [
+    ...new Map(
+      tabs?.map((order) => [order.user_id.documentId, {
+        documentId: order.user_id.documentId,
+        username: order.user_id.username,
+      }])
+    ).values(),
+  ];
+  console.log(userTabOrders);
+
+  const filteredUsers = unCompletedOrders
     ? [
         ...new Set(
-          orders
+          unCompletedOrders
             .filter((order) => {
               return order.user_id.username;
             })
@@ -50,43 +78,39 @@ export default async function Orders() {
       ]
     : [];
 
-  if (!orders || orders.length === 0) {
+  if (!unCompletedOrders &&!tabs ) {
     return <EmptyView text="Geen openstaande bestellingen" />;
   }
 
   return (
     <div className="orders">
+      {userTabOrders.length > 0 ? (
+        <>
+          <h3 className="orders__title">Openstaande rekeningen</h3>
+          {userTabOrders.map((item, index) => (
+            <Link
+              key={index}
+              href={`/bestellingen/gebruiker/${item.documentId}`}
+              className="orders__tab"
+            >
+              {item.username}
+            </Link>
+          ))}
+        </>
+      ) : (
+        <></>
+      )}
       {filteredUsers.map((username) => {
-        const userOrders = orders.filter(
-          (order) => order.user_id.username === username
-        );
-        const userTabOrders = userOrders.filter(
-          (order) => order.paymentMethod === "tab"
-        );
-        console.log(userTabOrders);
-        const userPayedOrders = userOrders.filter(
-          (order) => order.paymentMethod !== "tab"
-        );
-
         return (
           <div key={username} className="orders__user-section">
             <h2 className="orders__user-title">{username}</h2>
-            <div className="orders__section">
-              {userTabOrders.length > 0 ? (
-                <>
-                  <h3 className="orders__title">Openstaande rekeningen</h3>
+            <div className="orders__section"></div>
 
-                  <TabList orders={userTabOrders} />
-                </>
-              ) : (
-                <></>
-              )}
-            </div>
             <div className="orders__section">
               <h3 className="orders__title">Online betaalde bestellingen</h3>
-              {userPayedOrders.length > 0 ? (
+              {unCompletedOrders.length > 0 ? (
                 <ul className="orders__list">
-                  {userPayedOrders.map((order, index) => (
+                  {unCompletedOrders.map((order, index) => (
                     <OrderItem key={index} order={order} />
                   ))}
                 </ul>
