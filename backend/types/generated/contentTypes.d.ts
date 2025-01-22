@@ -545,6 +545,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     dateCreated: Schema.Attribute.DateTime;
     isCompleted: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    isPaid: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::order.order'> &
       Schema.Attribute.Private;

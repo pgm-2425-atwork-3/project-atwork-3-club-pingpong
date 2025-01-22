@@ -22,7 +22,7 @@ export const getOrders = gql`
   }
 `;
 
-export const getUncompletedOrders = gql`
+export const getOrdersByFilter = gql`
   query Orders($filters: OrderFiltersInput) {
     orders(filters: $filters) {
       documentId
@@ -41,6 +41,8 @@ export const getUncompletedOrders = gql`
       }
       paymentMethod
       dateCreated
+      isCompleted
+      isPaid
     }
   }
 `;

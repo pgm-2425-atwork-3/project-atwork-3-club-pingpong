@@ -44,22 +44,18 @@ export default function OrderItem({ order }: { order: Order }) {
           </li>
         ))}
       </ul>
-      {order.paymentMethod !== "tab" && (
-        <>
-          <p className="order-item__payment-method">
-            Betaalwijze: {order.paymentMethod}
-          </p>
-          <p className="order-item__total">totaalbedrag: €{order.total}</p>
-          {!order.isCompleted && (
-            <button
-              onClick={() => handleCompleteOrder(order.documentId)}
-              className="order-item__complete"
-            >
-              Bestelling afronden
-            </button>
-          )}
-        </>
-      )}
+      <>
+        <p className="order-item__payment-method">
+          Betaalwijze: {order.paymentMethod}
+        </p>
+        <p className="order-item__total">totaalbedrag: €{order.total}</p>
+        <button
+          onClick={() => handleCompleteOrder(order.documentId)}
+          className="order-item__complete"
+        >
+          Bestelling afronden
+        </button>
+      </>
     </div>
   );
 }

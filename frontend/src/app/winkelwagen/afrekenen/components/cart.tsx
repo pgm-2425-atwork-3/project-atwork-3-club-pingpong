@@ -40,7 +40,7 @@ export default function Cart({ user }: CartProps) {
   useEffect(() => {
     setTotal(
       products.reduce(
-        (total, product) => total += (product.unit_price * product.quantity),
+        (total, product) => (total += product.unit_price * product.quantity),
         0
       )
     );
@@ -70,6 +70,8 @@ export default function Cart({ user }: CartProps) {
         paymentMethod: paymentMethod,
         total: total,
         dateCreated: new Date().toISOString(),
+        isCompleted: false,
+        isPaid: paymentMethod === "tab" ? false : true,
       },
     };
 
@@ -80,12 +82,10 @@ export default function Cart({ user }: CartProps) {
         createOrder,
         orderData
       );
-      console.log("Order created:", response);
 
       // Get the id of the created order
       const orderId = (response as { createOrder: { documentId: string } })
         .createOrder.documentId;
-      console.log("Order created with id:", orderId);
 
       // Create order items for each product in the cart
       await Promise.all(
@@ -102,7 +102,6 @@ export default function Cart({ user }: CartProps) {
 
       // Set the state to complete
       setIsComplete(true);
-      console.log("Order created successfully");
     } catch (error) {
       console.error("Error creating order:", error);
     }
@@ -166,7 +165,7 @@ export default function Cart({ user }: CartProps) {
               className="checkout__payment-method-input"
             />
             <span className="checkout__payment-method-label">
-              Rekening 
+              Rekening
               <BsCashStack />
             </span>
           </label>
