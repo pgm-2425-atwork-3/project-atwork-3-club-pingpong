@@ -7,30 +7,26 @@ import {
 } from "@/actions/getEvents";
 import { Event } from "@/types/types";
 
-export default function EventDetail({
-    params,
-}: {
-    params: { documentId: string };
-}) {
+export default function EventDetail({ params }: { params: { id: string } }) {
     const [event, setEvent] = useState<Event | null>(null);
     const [signUps, setSignUps] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [userStatus, setUserStatus] = useState<string>("");
 
-    const documentId = params.documentId;
+    const id = params.id;
 
     useEffect(() => {
-        if (!documentId) return;
+        if (!id) return;
 
         const fetchDetails = async () => {
             try {
                 // Fetch event details
-                const eventDetails = await getEventById(documentId);
+                const eventDetails = await getEventById(id);
                 setEvent(eventDetails);
 
                 // Fetch event signups
-                const signUpsData = await getEventSignUps(documentId);
+                const signUpsData = await getEventSignUps(id);
                 setSignUps(signUpsData);
 
                 setLoading(false);
@@ -42,7 +38,7 @@ export default function EventDetail({
         };
 
         fetchDetails();
-    }, [documentId]); // Re-run the effect when documentId changes
+    }, [id]); // Re-run the effect when id changes
 
     const handleSignUp = async () => {
         if (!userStatus) {
@@ -51,11 +47,11 @@ export default function EventDetail({
         }
 
         try {
-            const success = await signUpForEvent(documentId, userStatus);
+            const success = await signUpForEvent(id, userStatus);
             if (success) {
                 alert(`You have successfully signed up as ${userStatus}!`);
                 // Refresh sign-ups after successful registration
-                const updatedSignUps = await getEventSignUps(documentId);
+                const updatedSignUps = await getEventSignUps(id);
                 setSignUps(updatedSignUps);
             } else {
                 alert("Failed to sign up.");

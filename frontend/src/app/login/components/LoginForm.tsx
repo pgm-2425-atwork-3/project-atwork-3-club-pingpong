@@ -30,7 +30,9 @@ export default function LoginForm() {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            <h1 className="text-center font-bold text-xl">Sign in</h1>
+            <h1 className="text-center font-bold text-xl text-white">
+                Sign in
+            </h1>
             <div>
                 <input
                     name="email"
