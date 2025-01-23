@@ -103,11 +103,12 @@ export default async function Orders() {
       {filteredUsers.map((username) => {
         return (
           <div key={username} className="orders__user-section">
+            <h3 className="orders__title">bestellingen</h3>
             <h2 className="orders__user-title">{username}</h2>
             <div className="orders__section"></div>
 
             <div className="orders__section">
-              <h3 className="orders__title">Online betaalde bestellingen</h3>
+              
               {unCompletedOrders.length > 0 ? (
                 <ul className="orders__list">
                   {unCompletedOrders.map((order, index) => (

@@ -2,21 +2,33 @@
   margin-top: 1.25rem;
 }
 
-.orders__user {
-  margin-bottom: 2rem;
-}
-
-.orders__user-title {
+.orders__title {
   font-size: 1.25rem;
   font-weight: 700;
   color: #f94d1d;
 }
 
-.orders__title {
+.orders__tab {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  outline: 1px solid #f94d1d;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.orders__user {
+  margin-bottom: 2rem;
+}
+
+.orders__user-title {
   font-size: 1.1rem;
   font-weight: 500;
   color: #f94d1d;
 }
+
 
 .orders__separator {
   margin-bottom: 0.625rem;
